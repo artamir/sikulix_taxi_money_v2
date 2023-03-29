@@ -12,6 +12,7 @@ dictTaxi = {"319558":
                 "pic":"319558.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
+                "abilities":["expensive order", "fast order"],
                 "use diamonds reload": True},
             "264417":
                 {"id":"264417",
@@ -599,6 +600,25 @@ def loadAutoPage():
     c(fn)
 
 #=======================================================================================
+def getAbilities():
+    abilities = auto.get("abilities", None)
+    if not abilities == None:
+        for ability in abilities:
+            if ability == "expensive order":
+                if not exists(Pattern("expensive order pic.png").similar(0.95)):
+                    goToPageUp()
+                    scrollToPictureDown(Pattern("expensive order pic.png").similar(0.95), region)
+                ifExistsClick(Pattern("expensive order pic.png").similar(0.95))
+
+ 
+            if ability == "fast order":
+                
+                if not exists(Pattern("fast order pic-2.png").similar(0.94)):
+                    goToPageUp()
+                    scrollToPictureDown(Pattern("fast order pic-2.png").similar(0.94), region)
+                ifExistsClick(Pattern("fast order pic-2.png").similar(0.94))
+
+#=======================================================================================
 def main():
     fn = "main"
     #o(fn)
@@ -622,7 +642,10 @@ def main():
         
         if status.find("empty") > -1:
             getOrder()
-        
+
+        if status == "order accepted":
+            getAbilities()            
+                
         if status == "submit order":
             click("submit order.png")
 
