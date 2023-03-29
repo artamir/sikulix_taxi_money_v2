@@ -1,0 +1,634 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>Sikulix_TaxiMoneyV2.sikuli</h2> <a href="Sikulix_TaxiMoneyV2.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="kw">import</span> logging
+<span class="kw">import</span> datetime
+<span class="kw">import</span> time
+
+urlGarage = <span class="str">"https://www.taxi-money.net/garage/"</span>
+auto = {}
+dictTaxi = {<span class="str">"319558"</span>:
+                {<span class="str">"id"</span>:<span class="str">"319558"</span>,
+                <span class="str">"pic"</span>:<img src="319558.png" />,
+                <span class="str">"orderPic"</span>:<span class="str">"rabota"</span>,
+                <span class="str">"findWords"</span>:<span class="str">"работа"</span>,
+                <span class="str">"use diamonds reload"</span>: True},
+            <span class="str">"264417"</span>:
+                {<span class="str">"id"</span>:<span class="str">"264417"</span>,
+                <span class="str">"pic"</span>:<img src="264417.png" />,
+                <span class="str">"orderPic"</span>:<span class="str">"diamonds"</span>,
+                <span class="str">"findWords"</span>:<span class="str">"бонус"</span>,
+                <span class="str">"use diamonds reload"</span>: True}}
+
+firefox = App(<span class="str">"c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe"</span>)
+firefox.open()
+
+fault_capcha_counter = <span class="dig">0</span>
+
+FORMAT=<span class="str">'%(asctime)-15s %(message)s'</span>
+logging.basicConfig(
+        filename=<span class="str">'log-taxi.log'</span>,<span class="cmt">#logname,</span>
+        format=FORMAT)
+logger=logging.getLogger(<span class="str">''</span>)
+
+loggetTabs = []
+
+
+region = Region(<span class="dig">450</span>,<span class="dig">113</span>,<span class="dig">691</span>,<span class="dig">547</span>)
+regionMargin = Region(<span class="dig">1106</span>,<span class="dig">270</span>,<span class="dig">237</span>,<span class="dig">311</span>)
+regionSideMenu = Region(<span class="dig">243</span>,<span class="dig">113</span>,<span class="dig">236</span>,<span class="dig">517</span>)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> debugStop():
+    <span class="dig">1</span>/<span class="dig">0</span>
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getLoggerTabsStr():
+    t=<span class="str">''</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(loggetTabs)):
+        t+=<span class="str">'\t'</span>
+    <span class="kw">return</span> t
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> o(text):
+    logger.warning(getLoggerTabsStr()+text+<span class="str">' {'</span>)
+    loggetTabs.append(text)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> c(text):
+    <span class="kw">if</span> len(loggetTabs) &gt; <span class="dig">0</span>:
+        loggetTabs.pop()
+    logger.warning(getLoggerTabsStr()+<span class="str">'} '</span>+text)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> highlightPicture(pPicture):
+    <span class="kw">try</span>:
+        m = <span class="skw">find</span>(pPicture)
+        <span class="cmt"># the red frame will grow 5 times</span>
+        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">2</span>):
+            m.highlight(<span class="dig">1</span>)
+            m = m.nearby(<span class="dig">5</span>)
+
+        <span class="kw">return</span> True
+    <span class="kw">except</span>:
+        <span class="kw">return</span> False
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> goToURL(url):
+    fn = <span class="str">"goToURL"</span>
+    o(fn)
+    <span class="skw">type</span>(<span class="str">u"l"</span>,KeyModifier.CTRL)
+    <span class="skw">type</span>(<span class="str">u"a"</span>,KeyModifier.CTRL)
+    paste(url)
+    <span class="skw">type</span>(Key.ENTER)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> waitPageLoad():
+    fn = <span class="str">"waitPageLoad"</span>
+    o(fn)
+    _region = Region(<span class="dig">5</span>,<span class="dig">0</span>,<span class="dig">1318</span>,<span class="dig">53</span>)
+    _region.<span class="skw">wait</span>(<img src="1678363257952.png" />,<span class="dig">60</span>)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> scrollToPicture(pPicture, pRegion, pStopPicture, pKey):
+    fn = <span class="str">"scrollToPicture"</span>
+    o(fn)
+    <span class="kw">while</span> <span class="kw">not</span> exists(pStopPicture,<span class="dig">0</span>):
+        <span class="kw">if</span> <span class="kw">not</span> pRegion.exists(pPicture,<span class="dig">0</span>):
+            <span class="cmt">#at = Mouse.at()</span>
+            ifExistsClick(<img src="1668111730485-2.png" />,regionMargin)
+            firefox.focus()
+            <span class="cmt">#Mouse.move(at) </span>
+            <span class="skw">type</span>(pKey)
+            <span class="skw">type</span>(pKey)
+            <span class="skw">type</span>(pKey)
+        <span class="kw">else</span>:
+            highlightPicture(pPicture)
+            c(fn)
+            <span class="kw">return</span> True
+
+    highlightPicture(pStopPicture)
+    c(fn)
+    <span class="kw">return</span> False
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> scrollToPictureUp(pPicture, pRegion):
+    fn = <span class="str">"scrollToPictureUp"</span>
+    o(fn)
+    _stopPic = <img src="_UpPage.png" />
+    c(fn)
+    <span class="kw">return</span> scrollToPicture(pPicture, pRegion, _stopPic, Key.UP)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> scrollToPictureDown(pPicture, pRegion):
+    fn = <span class="str">"scrollToPictureDown"</span>
+    o(fn)
+    _stopPic = <img src="_DownPage.png" />
+    c(fn)
+    <span class="kw">return</span> scrollToPicture(pPicture, pRegion, _stopPic, Key.DOWN)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span>  scrollToOrderDown(pPicture, pRegion):
+    fn = <span class="str">"scrollToOrderDown"</span>
+    o(fn)
+    pStopPicture = <img src="_DownPage.png" />
+    <span class="kw">while</span> <span class="kw">not</span> exists(pStopPicture,<span class="dig">0</span>):
+        closeReclama()
+        <span class="kw">if</span> <span class="kw">not</span> pRegion.exists(pPicture,<span class="dig">0</span>):
+            <span class="kw">if</span> pRegion.exists(<img src="1678522428242.png" />,<span class="dig">0</span>):
+                reloadOrders()
+
+            <span class="skw">type</span>(Key.PAGE_DOWN)
+        <span class="kw">else</span>:
+            c(fn)
+            <span class="kw">return</span> True
+    <span class="cmt">#highlightPicture(pStopPicture) </span>
+    c(fn)
+    <span class="kw">return</span> False
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> goToPageEnd():
+    fn = <span class="str">"goToPageEnd"</span>
+    o(fn)
+    <span class="cmt">#at = Mouse.at()</span>
+    ifExistsClick(<img src="1668111730485.png" />,regionMargin)
+    <span class="cmt">#Mouse.move(at)</span>
+    <span class="skw">type</span>(Key.END, KeyModifier.CTRL)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> goToPageHome():
+    fn = <span class="str">"goToPageHome"</span>
+    o(fn)
+    <span class="cmt">#at = Mouse.at()</span>
+    ifExistsClick(<img src="1668111730485-1.png" />,regionMargin)
+    <span class="cmt">#Mouse.move(at)</span>
+    <span class="skw">type</span>(Key.HOME, KeyModifier.CTRL)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> goToPageUp():
+    goToPageHome()
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> goToPageDown():
+    goToPageEnd()
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> ifExistsClick(pPicture, pRegion=None):
+    fn = <span class="str">"ifExistsClick"</span>
+    o(fn)
+    <span class="cmt">#at = Mouse.at() </span>
+    closeReclama()
+    <span class="cmt">#Mouse.move(at)</span>
+
+    <span class="cmt">#at = Mouse.at()</span>
+    <span class="kw">if</span> regionMargin.exists(<img src="1668111730485.png" />,<span class="dig">0</span>):
+        <span class="kw">try</span>:
+            regionMargin.<span class="skw">click</span>(<img src="1668111730485.png" />)
+        <span class="kw">except</span>:
+           <span class="kw">print</span> <span class="str">'ifExistsClick: cant click on 1668111730485.png'</span>
+    <span class="cmt">#Mouse.move(at)</span>
+
+    <span class="cmt">#at = Mouse.at()   </span>
+    <span class="kw">try</span>:
+        <span class="kw">if</span> pRegion.exists(pPicture,<span class="dig">0</span>):
+            <span class="cmt">#pRegion.click(pPicture)</span>
+            pRegion.<span class="skw">click</span>()
+            <span class="cmt">#Mouse.move(at)</span>
+            c(fn)
+            <span class="kw">return</span> True
+    <span class="kw">except</span>:
+        <span class="kw">if</span> exists(pPicture,<span class="dig">0</span>):
+            <span class="cmt">#click(pPicture)</span>
+            <span class="skw">click</span>()
+            <span class="cmt">#Mouse.move(at)</span>
+            c(fn)
+            <span class="kw">return</span> True
+
+    c(fn)
+    <span class="kw">return</span> False
+
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> closeReclama():
+    fn = <span class="str">"closeReclama"</span>
+    o(fn)
+    <span class="kw">if</span> exists(<img src="1678405736924.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>()
+    <span class="kw">if</span> exists(<img src="1678405891197.png" />,<span class="dig">0</span>):
+        <span class="skw">click</span>()
+    <span class="kw">if</span> exists(Pattern(<img src="1679127224332.png" />).similar(<span class="dig">0.87</span>),<span class="dig">0</span>):
+        <span class="skw">click</span>()
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> isOrderAccepted():
+    fn = <span class="str">"isOrderAccepted"</span>
+    o(fn)
+
+    status = getAutoStatus()
+    <span class="kw">if</span> status.<span class="skw">find</span>(<span class="str">"empty"</span>) &gt; -<span class="dig">1</span>:
+        c(fn)
+        <span class="kw">return</span> False
+
+    logging.basicConfig(
+        filename=<span class="str">'log-'</span>+auto[<span class="str">"id"</span>]+<span class="str">'.log'</span>,<span class="cmt">#logname,</span>
+        format=FORMAT)
+
+    logging.warning(<span class="str">"1"</span>)
+
+    logging.basicConfig(
+        filename=<span class="str">'log-taxi.log'</span>,<span class="cmt">#logname,</span>
+        format=FORMAT)
+
+    c(fn)
+    <span class="kw">return</span> True
+    <span class="cmt">#if exists("vzyati zakaz blue.png",0):</span>
+    <span class="cmt">#    return False</span>
+    <span class="cmt">#if exists("vzyati zakaz gray.png",0):</span>
+    <span class="cmt">#    return False</span>
+
+
+    <span class="cmt">#_pic = "_ZacazPrineat.png"</span>
+    <span class="cmt">#if scrollToOrderDown(_pic, region):</span>
+    <span class="cmt">#    return True</span>
+
+    <span class="cmt">#return False</span>
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> reloadOrders():
+    fn=<span class="str">"reloadOrders"</span>
+    o(fn)
+    goToPageDown()
+    logger.warning(fn+<span class="str">": auto['use diamonds reload'] = "</span>+str(auto[<span class="str">"use diamonds reload"</span>]))
+    <span class="kw">if</span> <span class="kw">not</span> auto[<span class="str">"use diamonds reload"</span>]:
+        status = getAutoStatus()
+        <span class="kw">while</span> <span class="kw">not</span> (status == <span class="str">"empty reload"</span>):
+            logger.warning(fn+<span class="str">":status = "</span> + status)
+            <span class="kw">if</span> time.time() - auto.get(<span class="str">"emptyStart"</span>, time.time()) &gt; <span class="dig">1.2</span>*<span class="dig">60</span>:
+                logger.warning(fn+<span class="str">":timer emptyStart = "</span> + str(time.time() - auto.get(<span class="str">"emptyStart"</span>, time.time())))
+                loadAutoPage()
+                c(fn)
+                <span class="kw">return</span>
+            <span class="skw">wait</span>(<span class="dig">1</span>)
+            status = getAutoStatus()
+            goToPageDown()
+
+    <span class="kw">if</span> <span class="kw">not</span> ifExistsClick(<img src="load orders.png" />):
+        <span class="kw">if</span> <span class="kw">not</span> ifExistsClick(<img src="update.png" />):
+            loadAutoPage()
+            c(fn)
+            <span class="kw">return</span>
+
+    <span class="skw">wait</span>(<span class="dig">10</span>)
+
+    maxWait = <span class="dig">5</span>
+    <span class="kw">while</span> isPageBusy() <span class="kw">and</span> maxWait &gt;= <span class="dig">0</span>:
+        <span class="skw">wait</span>(<span class="dig">1</span>)
+        maxWait -= <span class="dig">1</span>
+
+    <span class="kw">if</span> maxWait &lt;= <span class="dig">0</span>:
+        loadAutoPage()
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> isPageBusy():
+    fn = <span class="str">"isPageBusy"</span>
+    o(fn)
+    _pic = Pattern(<img src="loadOrdersIsBusy.png" />).similar(<span class="dig">0.84</span>)
+    <span class="kw">if</span> exists(_pic,<span class="dig">1</span>):
+        logger.warning(<span class="str">"    isPageBusy: True"</span>)
+        <span class="kw">if</span> <span class="kw">not</span> highlightPicture(_pic):
+            c(fn)
+            <span class="kw">return</span> False
+
+        c(fn)
+        <span class="kw">return</span> True
+
+    c(fn)
+    <span class="kw">return</span> False
+
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> clickOnCaptcha():
+    fn = <span class="str">"clickOnCaptcha"</span>
+    o(fn)
+    isCaptchaFound = False
+    _captcha2 = Pattern(<img src="_captcha21.png" />).targetOffset(<span class="dig">1</span>,-<span class="dig">52</span>)
+    <span class="kw">if</span> <span class="kw">not</span> exists(_captcha2,<span class="dig">0</span>):
+        _captcha2 = Pattern(<img src="_captcha22.png" />).targetOffset(<span class="dig">7</span>,-<span class="dig">52</span>)
+
+    <span class="kw">if</span> exists(_captcha2,<span class="dig">0</span>):
+        <span class="kw">if</span> <span class="kw">not</span> exists(getOrderCheckPic(),<span class="dig">0</span>):
+            c(fn)
+            <span class="kw">return</span> False
+
+        isCaptchaFound = True
+        <span class="kw">try</span>:
+            <span class="skw">click</span>(_captcha2)
+            c(fn)
+            <span class="kw">return</span> isOrderAccepted()
+        <span class="kw">except</span>:
+            clickOtmena()
+        fault_capcha_counter =+ <span class="dig">1</span>
+
+    c(fn)
+    <span class="kw">return</span> False
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getOrderPic():
+    fn = <span class="str">"getOrderPic"</span>
+    o(fn)
+    <span class="kw">print</span> <span class="str">"auto : "</span>
+    <span class="kw">print</span> auto
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"diamonds"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="1678956270388.png" />).similar(<span class="dig">0.96</span>).targetOffset(-<span class="dig">19</span>,<span class="dig">36</span>)
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"haltura"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="1678956311533.png" />).similar(<span class="dig">0.95</span>).targetOffset(-<span class="dig">39</span>,<span class="dig">40</span>)
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"rabota"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="1678956673196.png" />).similar(<span class="dig">0.95</span>).targetOffset(-<span class="dig">49</span>,<span class="dig">23</span>)
+    c(fn)
+
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getOrderFindWordsPic():
+    fn = <span class="str">"getOrderFindWordPic"</span>
+    o(fn)
+    <span class="kw">if</span> auto[<span class="str">"findWords"</span>] == <span class="str">"работа"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="find_word_rabota.png" />).similar(<span class="dig">0.93</span>).targetOffset(-<span class="dig">2</span>,<span class="dig">1</span>)
+    <span class="kw">if</span> auto[<span class="str">"findWords"</span>] == <span class="str">"бонус"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="1679495102267.png" />).similar(<span class="dig">0.92</span>)
+
+    <span class="kw">if</span> auto[<span class="str">"findWords"</span>] == <span class="str">"халтура"</span>:
+        c(fn)
+        <span class="kw">return</span> Pattern(<img src="1679495289633.png" />).similar(<span class="dig">0.93</span>)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getOrderCheckPic():
+    fn = <span class="str">"getOrderCheckPic"</span>
+    o(fn)
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"diamonds"</span>:
+        c(fn)
+        <span class="kw">return</span> <img src="1679146889005.png" />
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"haltura"</span>:
+        c(fn)
+        <span class="kw">return</span> <img src="1679146785443.png" />
+    <span class="kw">if</span> auto[<span class="str">"orderPic"</span>] == <span class="str">"rabota"</span>:
+        c(fn)
+        <span class="kw">return</span> <img src="1679146710257.png" />
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> findWords():
+    fn = <span class="str">"findWords"</span>
+    o(fn)
+    _picFindWords = getOrderFindWordsPic()
+    _findWords = auto[<span class="str">"findWords"</span>]
+    <span class="skw">type</span>(<span class="str">r"f"</span>,KeyModifier.CTRL)
+    paste(unicd(_findWords))
+    <span class="skw">type</span>(Key.ENTER)
+    <span class="kw">if</span> exists(_picFindWords,<span class="dig">0</span>):
+        <span class="skw">click</span>()
+        c(fn)
+        <span class="kw">return</span> True
+    c(fn)
+    <span class="kw">return</span> False
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getOrder():
+    fn = <span class="str">"getOrder"</span>
+    o(fn)
+    isOrderTaken = False
+    _pic = getOrderPic()
+    <span class="kw">while</span> <span class="kw">not</span> isOrderTaken:
+        <span class="cmt">#scrollToOrder = scrollToOrderDown(_pic, region)</span>
+        status = getAutoStatus()
+        <span class="kw">if</span> status == <span class="str">"empty reload"</span>:
+            reloadOrders()
+        <span class="kw">else</span>:
+            scrollToOrder = findWords()
+
+            <span class="kw">if</span> scrollToOrder:
+                highlightPicture(_pic)
+                <span class="kw">if</span> ifExistsClick(_pic, region):
+                    isOrderTaken = clickOnCaptcha()
+            <span class="kw">else</span>:
+                reloadOrders()
+                <span class="skw">wait</span>(<span class="dig">5</span>)
+    logger.warning(<span class="str">"    isOrderTaken = "</span>+str(isOrderTaken))
+    <span class="kw">if</span> isOrderTaken:
+        auto[<span class="str">"timeStart"</span>] = time.time()
+        c(fn)
+        <span class="kw">return</span> True
+    <span class="kw">else</span>:
+        reloadOrders()
+        <span class="skw">wait</span>(<span class="dig">3</span>)
+    c(fn)
+
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> setTimers():
+    fn = <span class="str">"setTimers"</span>
+    o(fn)
+    status = auto[<span class="str">"status"</span>]
+    orderAcceptedStart = auto.get(<span class="str">"orderAcceptedStart"</span>, None)
+    <span class="kw">if</span> status == <span class="str">"order accepted"</span>:
+        <span class="kw">if</span> orderAcceptedStart == None:
+            auto[<span class="str">"orderAcceptedStart"</span>] = time.time()
+    <span class="kw">else</span>:
+        auto.pop(<span class="str">"orderAcceptedStart"</span>,None)
+
+    emptyStart = auto.get(<span class="str">"emptyStart"</span>, None)
+    <span class="kw">if</span> status == <span class="str">"empty"</span>:
+        <span class="kw">if</span> emptyStart == None:
+            auto[<span class="str">"emptyStart"</span>] = time.time()
+    <span class="kw">else</span>:
+        auto.pop(<span class="str">"emptyStart"</span>,None)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> getAutoStatus():
+    fn = <span class="str">"getAutoStatus"</span>
+    o(fn)
+    logger.warning( <span class="str">"    getAutoStatus: auto: "</span> + str(auto))
+    pStopPicture = <img src="_DownPage.png" />
+
+
+    closeReclama()
+    <span class="kw">if</span> exists(<img src="_ZacazPrineat.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"order accepted"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"order accepted"</span>
+    <span class="kw">if</span> exists(<img src="submit order.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"submit order"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"submit order"</span>
+    <span class="kw">if</span> exists(<img src="1678655733157.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"close"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"close"</span>
+
+    <span class="kw">if</span> exists(<img src="otdykhayet.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"resting"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"resting"</span>
+
+    <span class="kw">if</span> exists(<img src="vzyati zakaz blue.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"empty"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"empty"</span>
+
+    <span class="kw">if</span> exists(<img src="vzyati zakaz gray.png" />,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"empty reload"</span>
+        setTimers()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"empty reload"</span>
+
+    <span class="skw">type</span>(Key.PAGE_DOWN)
+
+    <span class="kw">if</span> exists(pStopPicture,<span class="dig">0</span>):
+        auto[<span class="str">'status'</span>] = <span class="str">"unknown"</span>
+        setTimers()
+        loadAutoPage()
+        c(fn)
+        <span class="kw">return</span> <span class="str">"unknown"</span>
+
+    c(fn)
+    <span class="kw">return</span> getAutoStatus()
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> loadAutoPage():
+    fn = <span class="str">"loadAutoPage"</span>
+    o(fn)
+    _pic = auto[<span class="str">"pic"</span>]
+    key = auto[<span class="str">"id"</span>]
+    <span class="kw">print</span> auto
+    <span class="kw">while</span> <span class="kw">not</span> exists(_pic,<span class="dig">0</span>):
+        goToURL(urlGarage+key)
+        waitPageLoad()
+        closeReclama()
+    highlightPicture(_pic)
+    c(fn)
+
+<span class="cmt">#=======================================================================================</span>
+<span class="kw">def</span> main():
+    fn = <span class="str">"main"</span>
+    <span class="cmt">#o(fn)</span>
+    <span class="kw">for</span> key, val <span class="kw">in</span> dictTaxi.items():
+        <span class="kw">global</span> auto
+        auto = val
+
+        <span class="kw">if</span> auto.get(<span class="str">"status"</span>, <span class="str">"empty"</span>) == <span class="str">"order accepted"</span>:
+            <span class="kw">if</span> time.time() - auto.get(<span class="str">"orderAcceptedStart"</span>, time.time()-<span class="dig">60</span>*<span class="dig">60</span>*<span class="dig">24</span>) &lt; <span class="dig">10</span>*<span class="dig">60</span>:
+                <span class="kw">continue</span>
+
+            <span class="kw">if</span> time.time() - auto.get(<span class="str">"lastEnterTime"</span>, time.time()-<span class="dig">60</span>*<span class="dig">60</span>*<span class="dig">24</span>) &lt; <span class="dig">10</span>*<span class="dig">60</span>:
+                <span class="kw">continue</span>
+
+        logger.warning(<span class="str">"========================================================="</span>)
+        <span class="cmt">#print "orderAcceptedStart = "+time.strftime('%d.%m.%Y %H:%M', time.localtime(auto.get("orderAcceptedStart", time.time()-60*60*24))) </span>
+        auto[<span class="str">"lastEnterTime"</span>] = time.time()
+        loadAutoPage()
+
+        status = getAutoStatus()
+
+        <span class="kw">if</span> status.<span class="skw">find</span>(<span class="str">"empty"</span>) &gt; -<span class="dig">1</span>:
+            getOrder()
+
+        <span class="kw">if</span> status == <span class="str">"submit order"</span>:
+            <span class="skw">click</span>(<img src="submit order.png" />)
+
+        <span class="kw">if</span> status == <span class="str">"close"</span>:
+            <span class="skw">click</span>(<img src="1678655733157.png" />)
+
+    <span class="cmt">#c(fn)</span>
+
+<span class="kw">while</span> True:
+    <span class="cmt">#logger.warning("=========================================================")</span>
+    main()
+</pre>
+</body>
+</html>
