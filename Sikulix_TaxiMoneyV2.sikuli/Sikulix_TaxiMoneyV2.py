@@ -1,6 +1,7 @@
 import logging
 import datetime
 import time
+import csv
 
 urlGarage = "https://www.taxi-money.net/garage/"
 captchaPath = "c:\\Sikulix_scripts\\git_sikulix_taximoney\\sikulix_taximoney\\captcha\\"
@@ -109,13 +110,40 @@ def goToURL(url):
 def openOCRTab():
     fn = "openOCRTab"
     o(fn)
-    if exists("1679776061740.png"):
-        type(r't',KeyModifier.CTRL)
-        goToURL(urlYaPictureSearch)
-        wait("1679904976092.png",60)
+    wait("1679776061740.png", 120)
+    type(r't',KeyModifier.CTRL)
+    goToURL(urlYaPictureSearch)
+    wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
         
     c(fn)
 
+#=======================================================================================
+def ocrCaptcha(filename):
+    type("2",KeyModifier.CTRL)
+    wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
+    sleep(1)
+    click() 
+    wait("select_file.png")
+    click()
+    wait("file_name.png",120)
+    click()
+    paste(filename)
+    type(Key.ENTER)
+
+    recognizePic = Pattern("btn recognize text.png").similar(0.84)
+    wait(recognizePic,120)
+    highlightPicture(recognizePic)
+    click(recognizePic)
+    wait(Pattern("copy_in_buffer.png").similar(0.97))
+    click()
+    sleep(2) 
+    captchaText = firefox.getClipboard()
+    print captchaText.encode('utf-8').strip() 
+    csvfile = open("captcha.csv", 'a') #открыть на дозапись
+    csvwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    csvwriter.writerow([captchaText.encode('utf-8').strip().splitlines()[0], filename])
+    csvfile.close()
+    type("1", KeyModifier.CTRL)
 
 #=======================================================================================
 def waitPageLoad():
@@ -372,6 +400,7 @@ def clickOnCaptcha():
         if not checkCaptchaOrder():
             return False
         captchaFileName = saveCaptcha()
+        #ocrCaptcha(captchaFileName)
         try:
             click(_captcha2)
         except:
