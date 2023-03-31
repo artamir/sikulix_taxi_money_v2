@@ -399,7 +399,7 @@ def clickOnCaptcha():
     if exists(_captcha2):
         if not checkCaptchaOrder():
             return False
-        captchaFileName = saveCaptcha()
+        #captchaFileName = saveCaptcha()
         #ocrCaptcha(captchaFileName)
         try:
             click(_captcha2)
@@ -414,7 +414,7 @@ def clickOnCaptcha():
     if exists(_captcha2):
         if not checkCaptchaOrder():
             return False
-        captchaFileName = saveCaptcha()
+        #captchaFileName = saveCaptcha()
         try:
             click(_captcha2)
         except:
