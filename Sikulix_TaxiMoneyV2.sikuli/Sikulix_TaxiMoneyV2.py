@@ -671,9 +671,10 @@ def main():
         
         if status.find("empty") > -1:
             getOrder()
+            getAbilities()
 
-        if status == "order accepted":
-            getAbilities()            
+        #if status == "order accepted":
+            #getAbilities()            
                 
         if status == "submit order":
             click("submit order.png")
