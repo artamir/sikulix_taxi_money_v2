@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from sikuli import *
+
 def clickOnPicture(pPicture):
     print "clickOnPicture"
     if exists(pPicture,0):
