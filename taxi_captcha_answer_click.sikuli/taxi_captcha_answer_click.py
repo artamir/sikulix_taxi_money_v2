@@ -1,17 +1,27 @@
 # -*- coding: utf-8 -*-
 from sikuli import *
 
+taxi_base = None
+
 def clickOnPicture(pPicture):
-    print "clickOnPicture"
+    fn = "clickOnPicture"  
+    taxi_base.logger.o(fn)     
     if exists(pPicture,0):
         click(pPicture)
+        logger.c(fn)
         return True
+    taxi_base.logger.c(fn) 
     return False
 
 def clickOnCaptchaAnswer(strAnswer):
-    print "clickOnCaptchaAnswer"
-    result = False
+    fn = "clickOnCaptchaAnswer"
+    taxi_base.logger.o(fn)
     
+    result = False
+
+    type("1",KeyModifier.CTRL)
+    sleep(1)
+     
     if not result and strAnswer == "60:5":
         result = clickOnPicture("12.png")
 
@@ -72,4 +82,10 @@ def clickOnCaptchaAnswer(strAnswer):
     if not result and strAnswer == "Сложите2 и 4":
         result = clickOnPicture("1680422535985.png")
 
+    if not result:
+        _captcha2 = Pattern("_captcha21-2.png").targetOffset(1,-52)
+        if exists(_captcha2):
+            click()
+
+    taxi_base.logger.c(fn)
     return result

@@ -3,8 +3,9 @@ import time
 import csv
 
 import taxi_logging as logger
-import taxi_base as taxi_base
+import taxi_base
 import taxi_ability_click
+import taxi_captcha_answer_click
 
 urlGarage = "https://www.taxi-money.net/garage/"
 captchaPath = "c:\\Sikulix_scripts\\git_sikulix_taximoney\\sikulix_taximoney\\captcha\\"
@@ -96,7 +97,9 @@ def ocrCaptcha(filename):
     paste(filename)
     type(Key.ENTER)
 
-    recognizePic = Pattern("btn recognize text.png").similar(0.84)
+    #recognizePic = Pattern("btn recognize text.png").similar(0.84)
+
+    recognizePic =  "recognizePic.png"
     wait(recognizePic,120)
     taxi_base.highlightPicture(recognizePic)
     click(recognizePic)
@@ -104,12 +107,17 @@ def ocrCaptcha(filename):
     click()
     sleep(2) 
     captchaText = firefox.getClipboard()
-    print captchaText.encode('utf-8').strip() 
-    csvfile = open("captcha.csv", 'a') #открыть на дозапись
-    csvwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    csvwriter.writerow([captchaText.encode('utf-8').strip().splitlines()[0], filename])
-    csvfile.close()
+    captchaText = captchaText.encode('utf-8').strip().splitlines()[0] 
+    result = taxi_captcha_answer_click.clickOnCaptchaAnswer(captchaText)
+
+    if not result:
+        csvfile = open("captcha.csv", 'a') #открыть на дозапись
+        csvwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        csvwriter.writerow([captchaText, filename])
+        csvfile.close()
+    
     type("1", KeyModifier.CTRL)
+    return result
 
 #=======================================================================================
 def waitPageLoad():
@@ -224,13 +232,13 @@ def clickOnCaptcha():
         if not checkCaptchaOrder():
             logger.c(fn) 
             return False
-        #captchaFileName = saveCaptcha()
-        #ocrCaptcha(captchaFileName)
+        captchaFileName = saveCaptcha()
+        result = ocrCaptcha(captchaFileName)
+        
         try:
             click(_captcha2)
         except:
-            logger.c(fn) 
-            return False
+            print "cant click on second captcha"
         isCaptchaFound = True
         logger.c(fn)
         return isOrderAccepted()
@@ -497,6 +505,8 @@ taxi_base.regionSideMenu = regionSideMenu
 taxi_base.firefox = firefox
 
 taxi_ability_click.taxi_base = taxi_base
+taxi_captcha_answer_click.taxi_base = taxi_base
+
 print captchaPath
 openOCRTab()
 while True:
