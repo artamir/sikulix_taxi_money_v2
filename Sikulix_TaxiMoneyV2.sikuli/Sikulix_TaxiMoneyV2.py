@@ -100,11 +100,19 @@ def ocrCaptcha(filename):
     #recognizePic = Pattern("btn recognize text.png").similar(0.84)
 
     recognizePic =  "recognizePic.png"
-    wait(recognizePic,120)
-    taxi_base.highlightPicture(recognizePic)
-    click(recognizePic)
-    wait(Pattern("copy_in_buffer.png").similar(0.97))
-    click()
+    if exists(recognizePic,10): 
+        taxi_base.highlightPicture(recognizePic)
+        try:
+            click(recognizePic)
+        except:
+            print "cant click on recognizePic"
+        
+    if exists(Pattern("copy_in_buffer.png").similar(0.97)):
+        click()
+    else:
+        type("1", KeyModifier.CTRL)
+        return False
+    
     sleep(2) 
     captchaText = firefox.getClipboard()
     captchaText = captchaText.encode('utf-8').strip().splitlines()[0] 

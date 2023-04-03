@@ -8,7 +8,7 @@ def clickOnPicture(pPicture):
     taxi_base.logger.o(fn)     
     if exists(pPicture,0):
         click(pPicture)
-        logger.c(fn)
+        taxi_base.logger.c(fn)
         return True
     taxi_base.logger.c(fn) 
     return False
@@ -81,6 +81,65 @@ def clickOnCaptchaAnswer(strAnswer):
 
     if not result and strAnswer == "Сложите2 и 4":
         result = clickOnPicture("1680422535985.png")
+
+    if not result and strAnswer == "3 + 4":
+        result = clickOnPicture("1680515487197.png")
+
+    if not result and strAnswer == "30: 5":
+        result = clickOnPicture("1680515648836.png")
+
+    if not result and strAnswer == "7 + 3":
+        result = clickOnPicture("1680515748953.png")
+
+    if not result and strAnswer == "Выберите зеленый квадрат":
+        result = clickOnPicture("1680515841336.png")
+
+    if not result and strAnswer == "Выберите зеленый круг":
+        result = clickOnPicture("1680553970392.png")
+
+    if not result and strAnswer == "Выберите красный 10-угольник":
+        result = clickOnPicture("1680554074756.png")
+
+    if not result and strAnswer == "Выберите красный квадрат":
+        result = clickOnPicture("1680554215437.png")
+
+    if not result and strAnswer == "Выберите розовый треугольник":
+        result = clickOnPicture("1680554362616.png")
+
+    if not result and strAnswer == "30:2":
+        result = clickOnPicture("1680556176080.png")
+
+    if not result and strAnswer == "4 + 8":
+        result = clickOnPicture("1680556257403.png")
+
+    if not result and strAnswer == "6 + 6 + 5":
+        result = clickOnPicture("1680556341159.png")
+
+    if not result and strAnswer == "7 + 7":
+        result = clickOnPicture("1680556415158.png")
+
+    if not result and strAnswer == "7 плюс 7 + 2":
+        result = clickOnPicture("1680556486708.png")
+
+    if not result and strAnswer == "Выберите зеленый ромб":
+        result = clickOnPicture("1680556635489.png")
+        
+    #-------------------------------------------------------------------
+    if not result and strAnswer.find("ромб") > -1:
+        result = clickOnPicture("1680556635489.png")
+    
+    if not result and strAnswer.find("треугольник") > -1:
+        result = clickOnPicture("1680554362616.png")
+
+    if not result and strAnswer.find("квадрат") > -1:
+        result = clickOnPicture("1680554215437.png")
+
+    if not result and strAnswer.find("10-угольник") > -1:
+        result = clickOnPicture("1680554074756.png")
+
+    if not result and strAnswer.find("круг") > -1:
+        result = clickOnPicture("1680553970392.png")
+
 
     if not result:
         _captcha2 = Pattern("_captcha21-2.png").targetOffset(1,-52)
