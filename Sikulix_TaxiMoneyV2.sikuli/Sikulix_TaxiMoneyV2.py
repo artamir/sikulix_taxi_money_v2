@@ -48,7 +48,8 @@ def saveCaptcha():
     logger.o(fn)    
     #return 
     rightClick(Pattern("1679759379856.png").targetOffset(-4,-111))
-    click("1679759439561.png")    
+    wait("1679759439561.png")
+    click()    
 
     wait(Pattern("captchaFileName.png").targetOffset(40,-11),60)
     click()
