@@ -335,13 +335,15 @@ def findWords():
     type(r"f",KeyModifier.CTRL)
     paste(unicd(_findWords))
     type(Key.ENTER)
+    sleep(1)
     for i in range(5):
-        if exists(_picFindWords,1):
-            click()
+        if exists(_picFindWords,1): 
+            click(_picFindWords)
             logger.c(fn)
             return True
     
-        type(Key.F3) 
+        type(Key.F3)
+        sleep(1)
     logger.c(fn) 
     return False
     

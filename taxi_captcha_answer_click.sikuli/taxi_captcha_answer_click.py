@@ -140,7 +140,15 @@ def clickOnCaptchaAnswer(strAnswer):
     if not result and strAnswer.find("круг") > -1:
         result = clickOnPicture("1680553970392.png")
 
-
+    #----------------------------------------------------------
+    if not result and (strAnswer.find("Сложите") > -1 or strAnswer.find("Сумма") > -1 or strAnswer.find("плюс") > -1):
+        strAnswer.replace("б","6")
+        sum = getSumFromString(strAnswer)            
+        if sum > 0:
+            list = getListPictures(sum)
+            for pic in list:
+                if not result: result = clickOnPicture(pic)
+    
     if not result:
         _captcha2 = Pattern("_captcha21-2.png").targetOffset(1,-52)
         if exists(_captcha2):
@@ -148,3 +156,49 @@ def clickOnCaptchaAnswer(strAnswer):
 
     taxi_base.logger.c(fn)
     return result
+
+#==========================================================================
+def getSumFromString(s):
+    fn = "getSumFromString"
+    taxi_base.logger.o(fn)
+
+    numbers = numbersFromString(s)
+    sum = 0
+    for number in numbers:
+        sum += number
+
+    taxi_base.logger.c(fn)
+    return sum
+
+#==========================================================================
+def getListPictures(number):
+    fn = "getListPictures"
+    taxi_base.logger.o(fn)
+    list = [] 
+    if number == 10: list = ["1680640982606.png","1680641303054.png","1680642758264.png","1680643063282.png","1680643766353.png","1680641157411.png","1680515748953.png","1680642946399.png","1680643292830.png","1680643621285.png"]
+    if number == 11: list = ["1680670972425.png","1680671106882.png","1680671205487.png","1680556341159.png"] 
+    if number == 0: list = []
+     
+    taxi_base.logger.c(fn)
+    return list
+#==========================================================================
+def numbersFromString(s):
+    fn = "numbersFromString"
+    taxi_base.logger.o(fn)
+    
+    num_list = []
+ 
+    num = ''
+    for char in s:
+        if char.isdigit():
+            num = num + char
+        else:
+            if num != '':
+                num_list.append(int(num))
+                num = ''
+    if num != '':
+        num_list.append(int(num))
+    
+    taxi_base.logger.c(fn) 
+    return num_list
+
