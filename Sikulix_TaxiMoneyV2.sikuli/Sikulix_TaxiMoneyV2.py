@@ -97,6 +97,10 @@ def ocrCaptcha(filename):
     click()
     paste(filename)
     type(Key.ENTER)
+    try:
+        waitVanish("1680675556516.png")
+    except:
+        click("1680675612848.png")
 
     #recognizePic = Pattern("btn recognize text.png").similar(0.84)
 

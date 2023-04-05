@@ -141,11 +141,19 @@ def clickOnCaptchaAnswer(strAnswer):
         result = clickOnPicture("1680553970392.png")
 
     #----------------------------------------------------------
-    if not result and (strAnswer.find("Сложите") > -1 or strAnswer.find("Сумма") > -1 or strAnswer.find("плюс") > -1):
+    if not result and (strAnswer.find("+") > -1 or strAnswer.find("Сложите") > -1 or strAnswer.find("Сумма") > -1 or strAnswer.find("плюс") > -1):
         strAnswer.replace("б","6")
         sum = getSumFromString(strAnswer)            
         if sum > 0:
             list = getListPictures(sum)
+            for pic in list:
+                if not result: result = clickOnPicture(pic)
+
+    if not result and (strAnswer.find("Отнимите") > -1 or strAnswer.find("Сосчитайте") > -1):
+        strAnswer.replace("б","6")
+        diff = getDiffFromString(strAnswer)            
+        if diff > 0:
+            list = getListPictures(diff)
             for pic in list:
                 if not result: result = clickOnPicture(pic)
     
@@ -169,16 +177,53 @@ def getSumFromString(s):
 
     taxi_base.logger.c(fn)
     return sum
+#==========================================================================
+def getProductFromString(s):
+    fn = "getSumFromString"
+    taxi_base.logger.o(fn)
+
+    numbers = numbersFromString(s)
+    prod = 1
+    for number in numbers:
+        prod *= number
+
+    if prod == 1: prod = 0
+    taxi_base.logger.c(fn)
+    return prod
+
+
+#==========================================================================
+def getDiffFromString(s):
+    fn = "getSumFromString"
+    taxi_base.logger.o(fn)
+
+    numbers = numbersFromString(s)
+    diff = numbers[0]
+    i=0
+    for number in numbers:
+        if i == 0: 
+            i += 1 
+            continue
+        diff -= number
+        i += 1
+
+    taxi_base.logger.c(fn)
+    return diff
+
 
 #==========================================================================
 def getListPictures(number):
     fn = "getListPictures"
     taxi_base.logger.o(fn)
     list = [] 
-    if number == 10: list = ["1680640982606.png","1680641303054.png","1680642758264.png","1680643063282.png","1680643766353.png","1680641157411.png","1680515748953.png","1680642946399.png","1680643292830.png","1680643621285.png"]
-    if number == 11: list = ["1680670972425.png","1680671106882.png","1680671205487.png","1680556341159.png"] 
-    if number == 0: list = []
-     
+    if number == 6: list  = ["1680688020353.png",  "1680688441596.png",  "1680688519926.png", "1680688802133.png",  "1680688872401.png" ]    
+    if number == 9: list  = ["1680678900795.png",  "1680679013801.png",  "1680679122409.png", "1680679373831.png",  "1680679459717.png", "1680679574363.png"]    
+    if number == 10: list = ["1680640982606.png","1680641303054.png","1680642758264.png","1680643063282.png","1680643766353.png","1680700269338.png","1680641157411.png","1680515748953.png","1680642946399.png","1680643292830.png","1680643621285.png","1680682417696.png"]
+    if number == 11: list = ["1680670972425.png","1680671106882.png", "1680671205487.png","1680556341159.png"] 
+    if number == 12: list = ["1680700513649.png","1680700591875.png"]
+    if number == 0: list  = []
+
+
     taxi_base.logger.c(fn)
     return list
 #==========================================================================
