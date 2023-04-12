@@ -26,7 +26,8 @@ dictTaxi = {"319558":
                 "findWords":"бонус",
                 "use diamonds reload": True}}
 
-firefox = App("c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
+#firefox = App("c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
+firefox = App(r"i:\\FirefoxPortable\\App\\Firefox64\\firefox.exe")
 firefox.open()
 
 fault_capcha_counter = 0
@@ -59,8 +60,22 @@ def saveCaptcha():
     fileName = captchaPath+t+".jpg"
     paste(fileName)
     type(Key.ENTER)
-    waitVanish("1679905123827.png",60)
-    
+    try:
+        waitVanish("1679905123827.png",60)
+    except:
+        if exists("1680786260373.png"):
+            click()
+            logger.c(fn) 
+            return None
+
+
+    if exists("1679905123827.png",0):
+        if exists("1681126953941.png",0):
+            try:
+                click()
+            except:
+                print "cant click 'sohranit'"
+        
     logger.c(fn) 
     return(fileName)    
 
@@ -87,21 +102,30 @@ def openOCRTab():
 
 #=======================================================================================
 def ocrCaptcha(filename):
+    fn = "ocrCaptcha" 
+    logger.c(fn)
+    
     type("2",KeyModifier.CTRL)
     wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
     sleep(1)
     click() 
     wait("select_file.png")
     click()
-    wait("file_name.png",120)
-    click()
-    paste(filename)
-    type(Key.ENTER)
+     
+    if exists("file_name.png",10):
+        click()
+        paste(filename)
+        type(Key.ENTER)
+    
     try:
-        waitVanish("1680675556516.png")
+        waitVanish("unload file.png")
     except:
         click("1680675612848.png")
 
+    
+    if exists("unload file.png"):
+        click("1680675612848.png")        
+        
     #recognizePic = Pattern("btn recognize text.png").similar(0.84)
 
     recognizePic =  "recognizePic.png"
@@ -111,7 +135,7 @@ def ocrCaptcha(filename):
             click(recognizePic)
         except:
             print "cant click on recognizePic"
-        
+         
     if exists(Pattern("copy_in_buffer.png").similar(0.97)):
         click()
     else:
@@ -246,6 +270,9 @@ def clickOnCaptcha():
             logger.c(fn) 
             return False
         captchaFileName = saveCaptcha()
+        if captchaFileName == None:
+           logger.c(fn) 
+           return False 
         result = ocrCaptcha(captchaFileName)
         
         try:
@@ -500,8 +527,8 @@ def main():
             getOrder()
             taxi_ability_click.getAbilities(auto)
 
-        if status == "order accepted":
-            taxi_ability_click.getAbilities(auto)
+        #if status == "order accepted":
+        #    taxi_ability_click.getAbilities(auto)
                 
         if status == "submit order":
             click("submit order.png")

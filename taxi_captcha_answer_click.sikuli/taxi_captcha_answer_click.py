@@ -6,8 +6,14 @@ taxi_base = None
 def clickOnPicture(pPicture):
     fn = "clickOnPicture"  
     taxi_base.logger.o(fn)     
-    if exists(pPicture,0):
-        click(pPicture)
+    region = Region(827,118,277,195) 
+    if region.exists(pPicture,0):
+        try:
+            region.click(pPicture)
+        except:
+            taxi_base.logger.warning(fn + ": cant click("+pPicture+")")
+            taxi_base.logger.c(fn)
+            return False
         taxi_base.logger.c(fn)
         return True
     taxi_base.logger.c(fn) 
@@ -145,18 +151,23 @@ def clickOnCaptchaAnswer(strAnswer):
         strAnswer.replace("б","6")
         sum = getSumFromString(strAnswer)            
         if sum > 0:
-            list = getListPictures(sum)
-            for pic in list:
-                if not result: result = clickOnPicture(pic)
-
+            result = getListAndClickOnPictures(sum)
+            
+    #----------------------------------------------------------
+    if not result and (strAnswer.find("Произведение") > -1 or strAnswer.find("Помножьте") > -1):
+        strAnswer.replace("б","6")
+        prod = getProductFromString(strAnswer)            
+        if prod > 0:
+            result = getListAndClickOnPictures(prod)
+                           
+    #----------------------------------------------------------
     if not result and (strAnswer.find("Отнимите") > -1 or strAnswer.find("Сосчитайте") > -1):
         strAnswer.replace("б","6")
         diff = getDiffFromString(strAnswer)            
         if diff > 0:
-            list = getListPictures(diff)
-            for pic in list:
-                if not result: result = clickOnPicture(pic)
-    
+            result = getListAndClickOnPictures(diff)
+
+    #----------------------------------------------------------        
     if not result:
         _captcha2 = Pattern("_captcha21-2.png").targetOffset(1,-52)
         if exists(_captcha2):
@@ -210,18 +221,50 @@ def getDiffFromString(s):
     taxi_base.logger.c(fn)
     return diff
 
+def getListAndClickOnPictures(num):
+    fn = "getListPictures"
+    taxi_base.logger.o(fn)
+    
+    result = False 
+    list = getListPictures(num)
+    for pic in list:
+        if not result: result = clickOnPicture(pic)
+
+    num_list = map(int, str(num))    
+    if not result and len(num_list) > 1:
+        list = getListPictures(num_list[1])
+        for pic in list:
+            if not result: result = clickOnPicture(pic)
+    
+    taxi_base.logger.c(fn)        
+    return result
 
 #==========================================================================
 def getListPictures(number):
     fn = "getListPictures"
     taxi_base.logger.o(fn)
-    list = [] 
-    if number == 6: list  = ["1680688020353.png",  "1680688441596.png",  "1680688519926.png", "1680688802133.png",  "1680688872401.png" ]    
+    list = []
+    if number == 1: list  = ["1680775861192.png",  "1680775975197.png"]
+    if number == 2: list  = []
+    if number == 3: list  = [] 
+    if number == 4: list  = ["1680775912844.png",  "1680776031534.png",  "1680776404508.png", "1680934193623.png"] 
+    if number == 5: list  = [] 
+    if number == 6: list  = ["1680688020353.png",  "1680688441596.png",  "1680688519926.png", "1680688802133.png",  "1680688872401.png", "1680726512084.png" ]    
+    if number == 7: list  = ["1680515487197.png",  "1680775584350.png",  "1680775715433.png", "1680776341350.png",  "1680923201723.png"]    
+    if number == 8: list  = ["1680728208654.png",  "1680728275937.png",  "1680728400066.png", "1680728538173.png",  "1680728459308.png"  ]    
     if number == 9: list  = ["1680678900795.png",  "1680679013801.png",  "1680679122409.png", "1680679373831.png",  "1680679459717.png", "1680679574363.png"]    
     if number == 10: list = ["1680640982606.png","1680641303054.png","1680642758264.png","1680643063282.png","1680643766353.png","1680700269338.png","1680641157411.png","1680515748953.png","1680642946399.png","1680643292830.png","1680643621285.png","1680682417696.png"]
     if number == 11: list = ["1680670972425.png","1680671106882.png", "1680671205487.png","1680556341159.png"] 
-    if number == 12: list = ["1680700513649.png","1680700591875.png"]
-    if number == 0: list  = []
+    if number == 12: list = ["1680700513649.png","1680700591875.png", "1680701203457.png","1680701400603.png","1680701552294.png","1680701702544.png", "1680701790674.png", "1680922996271.png"]
+    if number == 13: list = ["1680923322881.png"]
+    if number == 14: list = ["1680934616554.png"]
+    if number == 15: list = []
+    if number == 16: list = []
+    if number == 17: list = ["1680923418329.png"]
+    if number == 18: list = ["1680934428772.png"]
+    if number == 19: list = []
+    if number == 20: lis  = ["1680923128075.png","1680934511589.png"]
+    if number == 0: list  = ["1680934538055.png", "1680934566923.png"]
 
 
     taxi_base.logger.c(fn)

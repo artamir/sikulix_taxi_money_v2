@@ -33,7 +33,7 @@ def scrollToPicture(pPicture, pRegion, pStopPicture, pKey):
         if not pRegion.exists(pPicture,0):
             #at = Mouse.at()
             ifExistsClick("1668111730485-2.png",regionMargin)
-            firefox.focus()
+            #firefox.focus()
             #Mouse.move(at) 
             type(pKey)
             type(pKey)
