@@ -318,21 +318,41 @@ def getOrderPic():
         return Pattern("1678956673196.png").similar(0.95).targetOffset(-49,23)
     logger.c(fn)
 
+#=======================================================================================
+def getOrderFindWords(i=1):
+    fn = "getOrderFindWord(i="+str(i)+")"
+    logger.o(fn)
+    
+    _findWord = auto["findWords"]
+    if i==1:
+        _findWord = _findWord+" -макс"
+
+    logger.c(fn)
+    return _findWord    
 
 #=======================================================================================
-def getOrderFindWordsPic():
+def getOrderFindWordsPic(i=1):
     fn = "getOrderFindWordPic"
     logger.o(fn)
     if auto["findWords"] == "работа":
         logger.c(fn)
-        return Pattern("find_word_rabota.png").similar(0.93).targetOffset(-140,50)
+        if i==1:
+            return Pattern("rabota-max.png").similar(0.93).targetOffset(-150,50)
+        if i==2:     
+            return Pattern("find_word_rabota.png").similar(0.93).targetOffset(-140,50)
     if auto["findWords"] == "бонус":
         logger.c(fn)
-        return Pattern("1679495102267.png").similar(0.92).targetOffset(-140,50)
+        if i==1:
+            return Pattern("bonus-max.png").similar(0.94).targetOffset(-150,50)
+        if i==2:
+            return Pattern("1679495102267.png").similar(0.92).targetOffset(-140,50)
 
     if auto["findWords"] == "халтура":
         logger.c(fn)
-        return Pattern("1679495289633.png").similar(0.93).targetOffset(-140,50)
+        if i==1:
+            return Pattern("haltura-max.png").similar(0.94).targetOffset(-150,50)
+        if i==2:    
+            return Pattern("1679495289633.png").similar(0.93).targetOffset(-140,50)
     logger.c(fn)
 
 #=======================================================================================
@@ -361,20 +381,22 @@ def getOrderCheckPic(i=1):
 def findWords():
     fn = "findWords"
     logger.o(fn)
-    _picFindWords = getOrderFindWordsPic()
-    _findWords = auto["findWords"]
-    type(r"f",KeyModifier.CTRL)
-    paste(unicd(_findWords))
-    type(Key.ENTER)
+    #type(Key.ENTER)
     sleep(1)
-    for i in range(5):
+    for count in range(5):
+        Do.popup("count = "+str(count),1)
+        index = 1
+        if count>1: index = 2
+        _picFindWords = getOrderFindWordsPic(index)
+        _findWords = getOrderFindWords(index)
+        type(r"f",KeyModifier.CTRL)
+        paste(unicd(_findWords))
+
         if exists(_picFindWords,1): 
             click(_picFindWords)
             logger.c(fn)
             return True
     
-        type(Key.F3)
-        sleep(1)
     logger.c(fn) 
     return False
     
@@ -396,7 +418,8 @@ def getOrder():
                 #taxi_base.highlightPicture(_pic)
                 #if taxi_base.ifExistsClick(_pic, region):
                 #    isOrderTaken = clickOnCaptcha()
-                isOrderTaken = clickOnCaptcha()
+                #for debug#isOrderTaken = clickOnCaptcha()
+                print(fn + ": debug")
             else:
                 reloadOrders()
                 wait(5)
