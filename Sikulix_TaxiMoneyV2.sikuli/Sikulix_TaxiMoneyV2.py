@@ -384,7 +384,9 @@ def findWords():
     #type(Key.ENTER)
     sleep(1)
     for count in range(5):
-        Do.popup("count = "+str(count),1)
+        #Do.popup("count = "+str(count),1)
+        if exists("btn-close-red.png",1):
+            click()
         index = 1
         if count>1: index = 2
         _picFindWords = getOrderFindWordsPic(index)
