@@ -366,20 +366,19 @@ def getOrderCheckPic(i=1):
     logger.o(fn)
     if auto["orderPic"] == "diamonds":
         logger.c(fn)
-        if i==1:
-            return "1679146889005.png"
-        if i==2:
-            return "bonus blue.png"
+        if i==1: return "1681414176624.png"
+        if i==2: return "1681414253967.png"
+        if i==3: return "1681414222097.png" 
     if auto["orderPic"] == "haltura":
         logger.c(fn)
-        if i==1:
-            return "1679146785443.png"
+        if i==1: return "1681414411208.png"
+        if i==2: return "1681414462048.png"
+        if i==3: return "1681414525789.png"
     if auto["orderPic"] == "rabota":
         logger.c(fn)
-        if i==1:
-            return "1679146710257.png"
-        if i==2:
-            return "rabota blue.png"
+        if i==1: return "1681414622176.png"
+        if i==2: return "1681414678789.png"
+        if i==3: return "1681414637745.png"    
     logger.c(fn)
 
 #=======================================================================================
@@ -425,8 +424,7 @@ def getOrder():
                 #taxi_base.highlightPicture(_pic)
                 #if taxi_base.ifExistsClick(_pic, region):
                 #    isOrderTaken = clickOnCaptcha()
-                #for debug#isOrderTaken = clickOnCaptcha()
-                print(fn + ": debug")
+                isOrderTaken = clickOnCaptcha()
             else:
                 reloadOrders()
                 wait(5)
