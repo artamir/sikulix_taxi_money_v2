@@ -109,8 +109,13 @@ def ocrCaptcha(filename):
     wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
     sleep(1)
     click() 
-    wait("select_file.png")
-    click()
+    try: 
+        wait("select_file.png")
+        click()
+    except:
+        type("1", KeyModifier.CTRL)
+        return False
+
      
     if exists("file_name.png",10):
         click()
