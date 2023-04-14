@@ -109,8 +109,13 @@ def ocrCaptcha(filename):
     wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
     sleep(1)
     click() 
-    wait("select_file.png")
-    click()
+    try: 
+        wait("select_file.png")
+        click()
+    except:
+        type("1", KeyModifier.CTRL)
+        return False
+
      
     if exists("file_name.png",10):
         click()
@@ -318,21 +323,41 @@ def getOrderPic():
         return Pattern("1678956673196.png").similar(0.95).targetOffset(-49,23)
     logger.c(fn)
 
+#=======================================================================================
+def getOrderFindWords(i=1):
+    fn = "getOrderFindWord(i="+str(i)+")"
+    logger.o(fn)
+    
+    _findWord = auto["findWords"]
+    if i==1:
+        _findWord = _findWord+" -макс"
+
+    logger.c(fn)
+    return _findWord    
 
 #=======================================================================================
-def getOrderFindWordsPic():
+def getOrderFindWordsPic(i=1):
     fn = "getOrderFindWordPic"
     logger.o(fn)
     if auto["findWords"] == "работа":
         logger.c(fn)
-        return Pattern("find_word_rabota.png").similar(0.93).targetOffset(-140,50)
+        if i==1:
+            return Pattern("rabota-max.png").similar(0.93).targetOffset(-150,50)
+        if i==2:     
+            return Pattern("find_word_rabota.png").similar(0.93).targetOffset(-140,50)
     if auto["findWords"] == "бонус":
         logger.c(fn)
-        return Pattern("1679495102267.png").similar(0.92).targetOffset(-140,50)
+        if i==1:
+            return Pattern("bonus-max.png").similar(0.94).targetOffset(-150,50)
+        if i==2:
+            return Pattern("1679495102267.png").similar(0.92).targetOffset(-140,50)
 
     if auto["findWords"] == "халтура":
         logger.c(fn)
-        return Pattern("1679495289633.png").similar(0.93).targetOffset(-140,50)
+        if i==1:
+            return Pattern("haltura-max.png").similar(0.94).targetOffset(-150,50)
+        if i==2:    
+            return Pattern("1679495289633.png").similar(0.93).targetOffset(-140,50)
     logger.c(fn)
 
 #=======================================================================================
@@ -341,40 +366,43 @@ def getOrderCheckPic(i=1):
     logger.o(fn)
     if auto["orderPic"] == "diamonds":
         logger.c(fn)
-        if i==1:
-            return "1679146889005.png"
-        if i==2:
-            return "bonus blue.png"
+        if i==1: return "1681414176624.png"
+        if i==2: return "1681414253967.png"
+        if i==3: return "1681414222097.png" 
     if auto["orderPic"] == "haltura":
         logger.c(fn)
-        if i==1:
-            return "1679146785443.png"
+        if i==1: return "1681414411208.png"
+        if i==2: return "1681414462048.png"
+        if i==3: return "1681414525789.png"
     if auto["orderPic"] == "rabota":
         logger.c(fn)
-        if i==1:
-            return "1679146710257.png"
-        if i==2:
-            return "rabota blue.png"
+        if i==1: return "1681414622176.png"
+        if i==2: return "1681414678789.png"
+        if i==3: return "1681414637745.png"    
     logger.c(fn)
 
 #=======================================================================================
 def findWords():
     fn = "findWords"
     logger.o(fn)
-    _picFindWords = getOrderFindWordsPic()
-    _findWords = auto["findWords"]
-    type(r"f",KeyModifier.CTRL)
-    paste(unicd(_findWords))
-    type(Key.ENTER)
+    #type(Key.ENTER)
     sleep(1)
-    for i in range(5):
+    for count in range(5):
+        #Do.popup("count = "+str(count),1)
+        if exists("btn-close-red.png",1):
+            click()
+        index = 1
+        if count>1: index = 2
+        _picFindWords = getOrderFindWordsPic(index)
+        _findWords = getOrderFindWords(index)
+        type(r"f",KeyModifier.CTRL)
+        paste(unicd(_findWords))
+
         if exists(_picFindWords,1): 
             click(_picFindWords)
             logger.c(fn)
             return True
     
-        type(Key.F3)
-        sleep(1)
     logger.c(fn) 
     return False
     
