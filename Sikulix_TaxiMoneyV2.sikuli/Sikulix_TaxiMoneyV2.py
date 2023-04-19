@@ -24,6 +24,8 @@ dictTaxi = {"319558":
                 "pic":"264417.png",
                 "orderPic":"diamonds",
                 "findWords":"бонус",
+                #"orderPic":"haltura",
+                #"findWords":"халтура",
                 "use diamonds reload": True}}
 
 #firefox = App("c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
