@@ -24,6 +24,8 @@ dictTaxi = {"319558":
                 "pic":"264417.png",
                 "orderPic":"diamonds",
                 "findWords":"бонус",
+                #"orderPic":"haltura",
+                #"findWords":"халтура",
                 "use diamonds reload": True}}
 
 #firefox = App("c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
@@ -52,8 +54,13 @@ def saveCaptcha():
     wait("1679759439561.png")
     click()    
 
-    wait(Pattern("captchaFileName.png").targetOffset(40,-11),60)
-    click()
+    if exists(Pattern("captchaFileName.png").targetOffset(40,-11),60):
+        click()
+    if exists(Pattern("btns openlink cancel.png").targetOffset(51,-3)):
+        click()
+        logger.c(fn) 
+        return None
+            
     type(r"a",KeyModifier.CTRL)
     today = datetime.datetime.today()
     t = today.strftime("%Y-%m-%d-%H-%M-%S")    
@@ -153,9 +160,10 @@ def ocrCaptcha(filename):
     result = taxi_captcha_answer_click.clickOnCaptchaAnswer(captchaText)
 
     if not result:
+        answer = taxi_captcha_answer_click.answer
         csvfile = open("captcha.csv", 'a') #открыть на дозапись
         csvwriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        csvwriter.writerow([captchaText, filename])
+        csvwriter.writerow([answer, captchaText, filename])
         csvfile.close()
     
     type("1", KeyModifier.CTRL)
@@ -392,13 +400,14 @@ def findWords():
         if exists("btn-close-red.png",1):
             click()
         index = 1
-        if count>1: index = 2
+        #if count>1: index = 2
         _picFindWords = getOrderFindWordsPic(index)
         _findWords = getOrderFindWords(index)
         type(r"f",KeyModifier.CTRL)
         paste(unicd(_findWords))
 
         if exists(_picFindWords,1): 
+            type(Key.ESC) 
             click(_picFindWords)
             logger.c(fn)
             return True
