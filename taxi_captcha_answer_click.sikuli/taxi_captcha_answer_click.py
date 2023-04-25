@@ -21,7 +21,7 @@ def clickOnPicture(pPicture):
     return False
 
 def clickOnCaptchaAnswer(strAnswer):
-    fn = "clickOnCaptchaAnswer"
+    fn = "clickOnCaptchaAnswer("+strAnswer+")"
     taxi_base.logger.o(fn)
     
     result = False
@@ -275,11 +275,11 @@ def getListPictures(number):
     fn = "getListPictures"
     taxi_base.logger.o(fn)
     list = []
-    if number == 1: list  = ["1680775861192.png",  "1680775975197.png",  "1682194448992.png", "1682194537870.png",   "1682194621286.png"]
-    if number == 2: list  = ["1682193912030.png"]
-    if number == 3: list  = ["1682194709257.png",  "1682194799558.png",  "1682194893744.png"] 
+    if number == 1: list  = ["1680775861192.png","1680775975197.png","1682194448992.png","1682194537870.png","1682194621286.png"]
+    if number == 2: list  = ["1682196824648.png","1682196925635.png","1682197014937.png","1682193912030.png","1682196809797.png","1682196905043.png","1682196982801.png"]
+    if number == 3: list  = ["1682194709257.png","1682194799558.png","1682194893744.png"] 
     if number == 4: list  = ["1680775912844.png",  "1680776031534.png",  "1680776404508.png", "1680934193623.png"] 
-    if number == 5: list  = [] 
+    if number == 5: list  = ["1682196366397.png",  "1682196418447.png",  "1682196472946.png", "1682196560431.png",   "1682196669771.png"] 
     if number == 6: list  = ["1680688020353.png",  "1680688441596.png",  "1680688519926.png", "1680688802133.png",  "1680688872401.png", "1680726512084.png" ]    
     if number == 7: list  = ["1680515487197.png",  "1680775584350.png",  "1680775715433.png", "1680776341350.png",  "1680923201723.png"]    
     if number == 8: list  = ["1680728208654.png",  "1680728275937.png",  "1680728400066.png", "1680728538173.png",  "1680728459308.png"  ]    
