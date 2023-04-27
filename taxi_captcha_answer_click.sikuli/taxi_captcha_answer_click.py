@@ -2,6 +2,7 @@
 from sikuli import *
 
 taxi_base = None
+answer = ""
 
 def clickOnPicture(pPicture):
     fn = "clickOnPicture"  
@@ -20,7 +21,7 @@ def clickOnPicture(pPicture):
     return False
 
 def clickOnCaptchaAnswer(strAnswer):
-    fn = "clickOnCaptchaAnswer"
+    fn = "clickOnCaptchaAnswer("+strAnswer+")"
     taxi_base.logger.o(fn)
     
     result = False
@@ -150,6 +151,7 @@ def clickOnCaptchaAnswer(strAnswer):
     if not result and (strAnswer.find("+") > -1 or strAnswer.find("Сложите") > -1 or strAnswer.find("Сумма") > -1 or strAnswer.find("плюс") > -1):
         strAnswer.replace("б","6")
         sum = getSumFromString(strAnswer)            
+        answer = str(sum)
         if sum > 0:
             result = getListAndClickOnPictures(sum)
             
@@ -157,6 +159,7 @@ def clickOnCaptchaAnswer(strAnswer):
     if not result and (strAnswer.find("Произведение") > -1 or strAnswer.find("Помножьте") > -1):
         strAnswer.replace("б","6")
         prod = getProductFromString(strAnswer)            
+        answer = str(prod)
         if prod > 0:
             result = getListAndClickOnPictures(prod)
                            
@@ -164,8 +167,17 @@ def clickOnCaptchaAnswer(strAnswer):
     if not result and (strAnswer.find("Отнимите") > -1 or strAnswer.find("Сосчитайте") > -1):
         strAnswer.replace("б","6")
         diff = getDiffFromString(strAnswer)            
+        answer = str(diff)
         if diff > 0:
             result = getListAndClickOnPictures(diff)
+    
+    #----------------------------------------------------------
+    if not result and (strAnswer.find(":") > -1 or strAnswer.find("Поделите") > -1):
+        strAnswer.replace("б","6")
+        div = getDivisionFromString(strAnswer)            
+        answer = str(div)
+        if div > 0:
+            result = getListAndClickOnPictures(div)
 
     #----------------------------------------------------------        
     if not result:
@@ -205,7 +217,7 @@ def getProductFromString(s):
 
 #==========================================================================
 def getDiffFromString(s):
-    fn = "getSumFromString"
+    fn = "getDiffFromString"
     taxi_base.logger.o(fn)
 
     numbers = numbersFromString(s)
@@ -220,6 +232,25 @@ def getDiffFromString(s):
 
     taxi_base.logger.c(fn)
     return diff
+
+#==========================================================================
+def getDivisionFromString(s):
+    fn = "getDivisionFromString"
+    taxi_base.logger.o(fn)
+
+    numbers = numbersFromString(s)
+    div = numbers[0]
+    i=0
+    for number in numbers:
+        if i == 0: 
+            i += 1 
+            continue
+        div /= number
+        i += 1
+
+    taxi_base.logger.c(fn)
+    return div
+
 
 def getListAndClickOnPictures(num):
     fn = "getListPictures"
@@ -244,11 +275,11 @@ def getListPictures(number):
     fn = "getListPictures"
     taxi_base.logger.o(fn)
     list = []
-    if number == 1: list  = ["1680775861192.png",  "1680775975197.png"]
-    if number == 2: list  = []
-    if number == 3: list  = [] 
+    if number == 1: list  = ["1680775861192.png","1680775975197.png","1682194448992.png","1682194537870.png","1682194621286.png"]
+    if number == 2: list  = ["1682196824648.png","1682196925635.png","1682197014937.png","1682193912030.png","1682196809797.png","1682196905043.png","1682196982801.png"]
+    if number == 3: list  = ["1682194709257.png","1682194799558.png","1682194893744.png"] 
     if number == 4: list  = ["1680775912844.png",  "1680776031534.png",  "1680776404508.png", "1680934193623.png"] 
-    if number == 5: list  = [] 
+    if number == 5: list  = ["1682196366397.png",  "1682196418447.png",  "1682196472946.png", "1682196560431.png",   "1682196669771.png"] 
     if number == 6: list  = ["1680688020353.png",  "1680688441596.png",  "1680688519926.png", "1680688802133.png",  "1680688872401.png", "1680726512084.png" ]    
     if number == 7: list  = ["1680515487197.png",  "1680775584350.png",  "1680775715433.png", "1680776341350.png",  "1680923201723.png"]    
     if number == 8: list  = ["1680728208654.png",  "1680728275937.png",  "1680728400066.png", "1680728538173.png",  "1680728459308.png"  ]    
