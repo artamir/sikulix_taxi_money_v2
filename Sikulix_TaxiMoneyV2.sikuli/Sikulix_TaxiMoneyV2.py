@@ -98,9 +98,13 @@ def goToURL(url):
     type(u"l",KeyModifier.CTRL)
     type(u"a",KeyModifier.CTRL)
     paste(url)
-    sleep(1)
     type(Key.ENTER)
-    type(Key.ESC)
+    try: 
+        waitVanish("1682633045606.png",5)
+    except:    
+        type(u"l",KeyModifier.CTRL)
+        type(Key.ENTER)
+    #type(Key.ESC)
     logger.c(fn)
 
 #=======================================================================================
@@ -464,6 +468,7 @@ def findWords():
 def getOrder():
     fn = "getOrder"
     logger.o(fn)
+    #click("1682634091197.png")
     isOrderTaken = False 
     _pic = getOrderPic()
     while not isOrderTaken:
@@ -580,6 +585,9 @@ def checkAutoURL():
     type(u"a",KeyModifier.CTRL)
     type(u"c",KeyModifier.CTRL)
     type(Key.ESC)
+    type(Key.TAB)
+    type(Key.TAB)
+    type(Key.TAB)
     clipboardURL = firefox.getClipboard()
     if url != clipboardURL:
         logger.warning("url="+url)
