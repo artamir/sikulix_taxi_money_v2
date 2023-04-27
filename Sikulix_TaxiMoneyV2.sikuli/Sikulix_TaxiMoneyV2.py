@@ -187,13 +187,24 @@ def isOrderAccepted():
     if status.find("empty") > -1:
         logger.c(fn)
         return False
-     
+
+    #----------------------------------------------------
+    m = exists("1682623392722.png", 0)
+
+    if m:
+        r = Region(m.getX()+20, m.getY(),70,20)
+        r.highlight(1)
+        t = r.text()
+        print(t)
+        csvfile = open("orders.csv", 'a') #открыть на дозапись
+        csvwriter = csv.writer(csvfile, dialect='excel-tab')
+        csvwriter.writerow([auto["id"], t, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
+        csvfile.close()
+    #----------------------------------------------------
+
+
     logger.c(fn)
     return True
-    #if exists("vzyati zakaz blue.png",0):
-    #    return False
-    #if exists("vzyati zakaz gray.png",0):
-    #    return False
     
     
     #_pic = "_ZacazPrineat.png"
