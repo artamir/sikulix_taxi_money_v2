@@ -209,8 +209,7 @@ def waitPageLoad():
     fn = "waitPageLoad"
     logger.o(fn)
     _region = Region(6,23,395,82)
-    #_region.wait("1678363257952.png",60)
-    _region.wait("1682631301869.png",60)
+    wait("1682631301869.png",60)
     logger.c(fn)
 
 
@@ -225,17 +224,25 @@ def isOrderAccepted():
         return False
 
     #----------------------------------------------------
-    m = exists("1682623392722.png", 0)
-
-    if m:
-        r = Region(m.getX()+20, m.getY(),70,20)
+    d = exists("1682623392722.png", 0)
+    if d:
+        r = Region(d.getX()+20, d.getY()-3,70,23)
         r.highlight(1)
-        t = r.text()
-        print(t)
-        csvfile = open("orders.csv", 'a') #открыть на дозапись
-        csvwriter = csv.writer(csvfile, dialect='excel-tab')
-        csvwriter.writerow([auto["id"], t, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
-        csvfile.close()
+        td = r.text()
+        print(td)
+
+    #----------------------------------------------------
+    v = exists("1682714278396.png", 0)
+    if v:
+        r = Region(v.getX()+20, v.getY()-5,80,25)
+        r.highlight(1)
+        tv = r.text()
+        print(tv)
+        
+    csvfile = open("orders.csv", 'a') #открыть на дозапись
+    csvwriter = csv.writer(csvfile, dialect='excel-tab')
+    csvwriter.writerow([auto["id"], td, tv, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
+    csvfile.close()
     #----------------------------------------------------
 
 
@@ -633,6 +640,10 @@ def main():
             if time.time() - auto.get("lastEnterTime", time.time()-60*60*24) < 1*60:
                 continue
 
+            if time.time() - auto.get("lastReloadTime", time.time()-60*60*24) > 5*60:
+                auto["lastReloadTime"] = time.time()
+                loadAutoPage()
+                
         logger.warning("=========================================================")
         #print "orderAcceptedStart = "+time.strftime('%d.%m.%Y %H:%M', time.localtime(auto.get("orderAcceptedStart", time.time()-60*60*24))) 
         
