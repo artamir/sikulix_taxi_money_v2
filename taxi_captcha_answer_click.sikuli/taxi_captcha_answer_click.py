@@ -26,7 +26,7 @@ def clickOnCaptchaAnswer(strAnswer):
     
     result = False
 
-    type("1",KeyModifier.CTRL)
+    type(taxi_base.auto["tab"],KeyModifier.CTRL)
     sleep(1)
      
     if not result and strAnswer == "60:5":

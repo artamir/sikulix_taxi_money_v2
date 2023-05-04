@@ -11,9 +11,13 @@ urlGarage = "https://www.taxi-money.net/garage/"
 captchaPath = "c:\\Sikulix_scripts\\git_sikulix_taximoney\\sikulix_taximoney\\captcha\\"
 urlYaPictureSearch = r'https://yandex.ru/images/search?rpt=imageview'
 
-auto = {}
-dictTaxi = {"319558":
+auto = None
+dictTaxi = {"OCR":
+                {"id":"OCR",
+                "tab":"1"},
+            "319558":
                 {"id":"319558",
+                "tab":"2",
                 "pic":"319558.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
@@ -21,6 +25,7 @@ dictTaxi = {"319558":
                 "use diamonds reload": True},
             "264417":
                 {"id":"264417",
+                "tab":"3",
                 "pic":"264417.png",
                 "orderPic":"diamonds",
                 "findWords":"бонус",
@@ -94,14 +99,44 @@ def goToURL(url):
     type(u"a",KeyModifier.CTRL)
     paste(url)
     type(Key.ENTER)
+    try: 
+        waitVanish("1682633045606.png",5)
+    except:    
+        type(u"l",KeyModifier.CTRL)
+        type(Key.ENTER)
+    #type(Key.ESC)
     logger.c(fn)
+
+#=======================================================================================
+def getTabNumber(taxiID=""):
+    fn = "getTabNumber(taxiID="+taxiID+")"
+    logger.o(fn)
+
+    if taxiID == "":
+        taxiID = auto["id"]
+ 
+    logger.c(fn)
+    return dictTaxi[taxiID]["tab"]
+
+
+#=======================================================================================
+def createTabs():
+    fn = "createTabs"
+    logger.o(fn)
+    for key,val in dictTaxi.items():
+        type(u"t",KeyModifier.CTRL)
+        sleep(2)
+    logger.c(fn)
+
 
 #=======================================================================================
 def openOCRTab():
     fn = "openOCRTab"
     logger.o(fn)
     wait("1679776061740.png", 120)
-    type(r't',KeyModifier.CTRL)
+    tabNumber = getTabNumber("OCR")
+    type(tabNumber,KeyModifier.CTRL)
+    sleep(2)
     goToURL(urlYaPictureSearch)
     wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
         
@@ -112,7 +147,7 @@ def ocrCaptcha(filename):
     fn = "ocrCaptcha" 
     logger.c(fn)
     
-    type("2",KeyModifier.CTRL)
+    type(getTabNumber("OCR"),KeyModifier.CTRL)
     wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
     sleep(1)
     click() 
@@ -120,7 +155,7 @@ def ocrCaptcha(filename):
         wait("select_file.png")
         click()
     except:
-        type("1", KeyModifier.CTRL)
+        type(getTabNumber(auto["id"]), KeyModifier.CTRL)
         return False
 
      
@@ -151,7 +186,7 @@ def ocrCaptcha(filename):
     if exists(Pattern("copy_in_buffer.png").similar(0.97)):
         click()
     else:
-        type("1", KeyModifier.CTRL)
+        type(getTabNumber(auto["id"]), KeyModifier.CTRL)
         return False
     
     sleep(2) 
@@ -166,15 +201,15 @@ def ocrCaptcha(filename):
         csvwriter.writerow([answer, captchaText, filename])
         csvfile.close()
     
-    type("1", KeyModifier.CTRL)
+    type(getTabNumber(auto["id"]), KeyModifier.CTRL)
     return result
 
 #=======================================================================================
 def waitPageLoad():
     fn = "waitPageLoad"
     logger.o(fn)
-    _region = Region(5,0,1318,53)
-    _region.wait("1678363257952.png",60)
+    _region = Region(6,23,395,82)
+    wait("1682631301869.png",60)
     logger.c(fn)
 
 
@@ -189,17 +224,25 @@ def isOrderAccepted():
         return False
 
     #----------------------------------------------------
-    m = exists("1682623392722.png", 0)
-
-    if m:
-        r = Region(m.getX()+20, m.getY(),70,20)
+    d = exists("1682623392722.png", 0)
+    if d:
+        r = Region(d.getX()+20, d.getY()-3,70,23)
         r.highlight(1)
-        t = r.text()
-        print(t)
-        csvfile = open("orders.csv", 'a') #открыть на дозапись
-        csvwriter = csv.writer(csvfile, dialect='excel-tab')
-        csvwriter.writerow([auto["id"], t, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
-        csvfile.close()
+        td = r.text()
+        print(td)
+
+    #----------------------------------------------------
+    v = exists("1682714278396.png", 0)
+    if v:
+        r = Region(v.getX()+20, v.getY()-5,80,25)
+        r.highlight(1)
+        tv = r.text()
+        print(tv)
+        
+    csvfile = open("orders.csv", 'a') #открыть на дозапись
+    csvwriter = csv.writer(csvfile, dialect='excel-tab')
+    csvwriter.writerow([auto["id"], td, tv, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
+    csvfile.close()
     #----------------------------------------------------
 
 
@@ -432,6 +475,7 @@ def findWords():
 def getOrder():
     fn = "getOrder"
     logger.o(fn)
+    #click("1682634091197.png")
     isOrderTaken = False 
     _pic = getOrderPic()
     while not isOrderTaken:
@@ -537,10 +581,36 @@ def getAutoStatus():
     return getAutoStatus()
 
 #=======================================================================================
+def checkAutoURL():
+    fn = "checkAutoURL"
+    logger.o(fn)
+    result = True
+    url = urlGarage+auto["id"]        
+    mouseMove("1682630621223.png")   
+    type(u"l",KeyModifier.CTRL)
+    sleep(1)
+    type(u"a",KeyModifier.CTRL)
+    type(u"c",KeyModifier.CTRL)
+    type(Key.ESC)
+    type(Key.TAB)
+    type(Key.TAB)
+    type(Key.TAB)
+    clipboardURL = firefox.getClipboard()
+    if url != clipboardURL:
+        logger.warning("url="+url)
+        logger.warning("clipboardURL="+clipboardURL)
+        result = False
+
+    logger.c(fn)
+    return result
+
+
+#=======================================================================================
 def loadAutoPage():
     fn = "loadAutoPage"
     logger.o(fn)
-    type("1",KeyModifier.CTRL)
+    type(getTabNumber(auto["id"]),KeyModifier.CTRL)
+    sleep(1)
     _pic = auto["pic"]
     key = auto["id"]
     print auto 
@@ -556,21 +626,37 @@ def main():
     fn = "main"
     #logger.o(fn)
     for key, val in dictTaxi.items(): 
+        if val["id"] == "OCR":
+            continue;
+        
         global auto
         auto = val
-
+        taxi_base.auto = auto
+                
         if auto.get("status", "empty") == "order accepted":
-            if time.time() - auto.get("orderAcceptedStart", time.time()-60*60*24) < 10*60:
+            if time.time() - auto.get("orderAcceptedStart", time.time()-60*60*24) < 1*60:
                 continue
 
-            if time.time() - auto.get("lastEnterTime", time.time()-60*60*24) < 10*60:
+            if time.time() - auto.get("lastEnterTime", time.time()-60*60*24) < 1*60:
                 continue
 
+            if time.time() - auto.get("lastReloadTime", time.time()-60*60*24) > 5*60:
+                auto["lastReloadTime"] = time.time()
+                loadAutoPage()
+                
         logger.warning("=========================================================")
         #print "orderAcceptedStart = "+time.strftime('%d.%m.%Y %H:%M', time.localtime(auto.get("orderAcceptedStart", time.time()-60*60*24))) 
+        
+        type(getTabNumber(auto["id"]),KeyModifier.CTRL)
+        sleep(1)
+
         auto["lastEnterTime"] = time.time()
-        loadAutoPage()
-                   
+        if auto.get("status", "firs open") == "first open":
+            loadAutoPage()
+
+        if not checkAutoURL():
+            loadAutoPage()
+                          
         status = getAutoStatus()
         
         if status.find("empty") > -1:
@@ -595,9 +681,12 @@ taxi_base.region = region
 taxi_base.regionMargin = regionMargin
 taxi_base.regionSideMenu = regionSideMenu
 taxi_base.firefox = firefox
+taxi_base.auto = auto
 
 taxi_ability_click.taxi_base = taxi_base
 taxi_captcha_answer_click.taxi_base = taxi_base
+
+createTabs()
 
 print captchaPath
 openOCRTab()
