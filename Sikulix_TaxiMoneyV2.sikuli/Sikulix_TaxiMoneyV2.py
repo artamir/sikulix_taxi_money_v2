@@ -7,11 +7,12 @@ import taxi_base
 import taxi_ability_click
 import taxi_captcha_answer_click
 
-urlGarage = "https://www.taxi-money.net/garage/"
+urlGarage = "https://www.taxi-money.in/garage/"
 captchaPath = "c:\\Sikulix_scripts\\git_sikulix_taximoney\\sikulix_taximoney\\captcha\\"
 urlYaPictureSearch = r'https://yandex.ru/images/search?rpt=imageview'
 
 auto = None
+betting = None
 dictTaxi = {"OCR":
                 {"id":"OCR",
                 "tab":"1"},
@@ -19,19 +20,69 @@ dictTaxi = {"OCR":
                 {"id":"319558",
                 "tab":"2",
                 "pic":"319558.png",
+                #"orderPic":"rabota",
+                #"findWords":"работа",
+                "orderPic":"haltura",
+                "findWords":"халтура",
+                #"abilities":["expensive order", "fast order"],
+                "use diamonds reload": True},
+            
+            "340726":
+                {"id":"340726",
+                "tab":"2",
+                "pic":"1684298810495.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
                 "abilities":["expensive order", "fast order"],
                 "use diamonds reload": True},
-            "264417":
-                {"id":"264417",
+
+            "355147":
+                {"id":"355147",
                 "tab":"3",
-                "pic":"264417.png",
-                "orderPic":"diamonds",
-                "findWords":"бонус",
+                "pic":"1689538309629.png",
+                "orderPic":"rabota",
+                "findWords":"работа",
                 #"orderPic":"haltura",
-                #"findWords":"халтура",
-                "use diamonds reload": True}}
+                #"findWords":"халтура",                
+                "abilities":["expensive order", "fast order"],
+                "use diamonds reload": True},
+               
+ #           "264417":
+ #             {"id":"264417",
+ #               "tab":"5",
+ #               "pic":"264417.png",
+ #              #"orderPic":"diamonds",
+ #               #"findWords":"бонус",
+ #               "orderPic":"haltura",
+ #               "findWords":"халтура",
+ #               "use diamonds reload": True},
+ #           "betting":
+ #               {"id":"betting",
+ #               "tab":"6",
+ #               "dictBK":{
+ #                   "у вована": "https://www.taxi-money.in/bookmaker-company/91",
+ #                   "Lanaya's БК": "https://www.taxi-money.in/bookmaker-company/23",
+ #                   "NIRVANA БК": "https://www.taxi-money.in/bookmaker-company/3",
+ #                   "Mimicry83": "https://www.taxi-money.in/bookmaker-company/6"},
+ #                   #"Mimicry83": "https://www.taxi-money.in/bookmaker-company/64"},
+ #               "findWordsHandle":"обработать",
+ #               "findWordsHandlePic":"handle pic.png",
+ #               "findWordsNexOrder":"NextOrer",
+ #               "findWordsNexOrderPic":"1686776624202.png",                
+                       
+ #               "findWords":"сделать ставку",
+ #               "findWordsPic":"findWordsPic.png",
+ #               "btnSubmitABidForProcessingWord":"отправить ставку на обработку",
+ #               "btnSubmitABidForProcessing":"1703921022119.png",
+ #               "btnPlaceABetWord":"сделать ставку",
+ #               "btnPlaceABet":"1686659500011.png",
+ #               "errPlaceABet":"1703921908636.png",
+ #               "free":"1686657854432.png",
+ #               "paymentMethod":"passenger account"
+ #               #"paymentMethod":"shopping account"
+ #               }
+            }
+
 
 #firefox = App("c:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe")
 firefox = App(r"i:\\FirefoxPortable\\App\\Firefox64\\firefox.exe")
@@ -44,10 +95,133 @@ region = Region(450,113,691,547)
 regionMargin = Region(1106,270,237,311)
 regionSideMenu = Region(243,113,236,517)
 
+Settings.MoveMouseDelay = 0.1
+
 #=======================================================================================
 def debugStop():
     1/0
 
+#=======================================================================================
+def addTime(pDate, strTime, template=None):
+    fn = "addTime"
+    logger.o(fn)
+    result = pDate
+    if template == None:
+        template = "%H:%M:%S"
+    try:    t = datetime.datetime.strptime(strTime, template).time()
+    except: t = None
+    if t == None: 
+        try:    t = datetime.datetime.strptime(strTime, "%H:%M:%S.").time()
+        except: 
+            t = datetime.datetime.strptime("0:0:0", "%H:%M:%S").time()
+            print(fn+": strTime"+strTime)
+    s = t.hour*60*60+t.minute*60+t.second
+    result = result + datetime.timedelta(seconds=s)
+    logger.c(fn)
+    return result
+
+#=======================================================================================
+def findExists(word, pic, seconds):
+    fn = "findExists("+word+", "+str(pic)+", seconds)"
+    
+    result = exists(pic, seconds)
+    if result:
+        return result
+    
+    type(r"f",KeyModifier.CTRL)
+    #paste(unicd(word))
+    
+    result = exists(pic, seconds)
+    #print("result1 = "+str(result))
+    if not result:
+        type(Key.F3)
+        result = exists(pic, seconds)
+        #print("result2 = "+str(result))
+    
+    return result
+
+#=======================================================================================
+def betting():
+    fn = "betting"
+    logger.o(fn)
+    
+    type(getTabNumber(auto["id"]), KeyModifier.CTRL)
+    if auto.get("status", "empty") == "order accepted":
+        if time.time() - auto.get("orderAcceptedStart", time.time()-60*60*24) < 1*60:         
+            logger.c(fn)
+            return
+            
+    if (datetime.datetime.now() - auto.get("NextOrder", datetime.datetime.now()-datetime.timedelta(seconds=60*60*24))).seconds < 0:
+            logger.c(fn)
+            return        
+    
+    for key, val in auto["dictBK"].items():
+        goToURL(val)
+        wait(1)
+        
+        _picFindWords = auto["findWordsHandlePic"]
+        _findWords = auto["findWordsHandle"]
+        type(r"f",KeyModifier.CTRL)
+        paste(unicd(_findWords))
+        if exists(_picFindWords,1): 
+            type(Key.ESC) 
+            click(_picFindWords)
+
+        if exists(auto["free"]):
+            _picFindWords = getOrderFindWordsPic(0)
+            _findWords = getOrderFindWords(0)
+            type(r"f",KeyModifier.CTRL)
+            paste(unicd(_findWords))
+            
+            wait(1)
+            if exists(_picFindWords,1): 
+                type(Key.ESC) 
+                click(_picFindWords)
+                
+                wait(1)
+                
+                #----------------------------------------------------
+                nextOrder = exists(auto["findWordsNexOrderPic"], 0)
+                if nextOrder:
+                    r = Region(nextOrder.getX()+nextOrder.getH(), nextOrder.getY()-3,70,23)
+                    r.highlight(1)
+                    textNextOrder = r.text()
+                    dtNextOrder = addTime(datetime.datetime.now(),textNextOrder, "%M м.%S с.")
+                    print(dtNextOrder)
+                    auto["NextOrder"] = dtNextOrder
+                    return
+
+                if auto["paymentMethod"] == "shopping account":
+                    if exists(Pattern("1690133321569.png").targetOffset(100,1)):
+                        click()
+                        if exists("1690133409563.png"):
+                            click()
+                        
+                    
+                #if exists(auto["btnPlaceABet"]):
+                _btnPlaceABet = auto["btnPlaceABet"]
+                _btnPlaceABetWord = auto["btnPlaceABetWord"]
+                if findExists(_btnPlaceABetWord, _btnPlaceABet, 3):
+                    click(_btnPlaceABet)
+
+                    if exists(auto["errPlaceABet"]):
+                        logger.c(fn)
+                        return False 
+                                   
+                    wait(17)
+                    #if exists(auto["btnSubmitABidForProcessing"],10):
+                    _btnSubmitABidForProcessing = auto["btnSubmitABidForProcessing"]
+                    _btnSubmitABidForProcessingWord = auto["btnSubmitABidForProcessingWord"]
+                    if findExists(_btnSubmitABidForProcessingWord, _btnSubmitABidForProcessing, 3):
+                        click(_btnSubmitABidForProcessing)
+                        
+                        wait(1)
+                        if not checkURL(val):
+                            type(Key.F4, KeyModifier.CTRL)
+                            logger.c(fn)
+                            return True
+    
+    logger.c(fn)
 
 
 #=======================================================================================
@@ -56,14 +230,19 @@ def saveCaptcha():
     logger.o(fn)    
     #return 
     rightClick(Pattern("1679759379856.png").targetOffset(-4,-111))
-    wait("1679759439561.png")
+    try:
+        wait("1679759439561.png")
+    except:
+        click("1690058815430.png")
+        logger.c(fn+": None 1")
+        return None
     click()    
 
     if exists(Pattern("captchaFileName.png").targetOffset(40,-11),60):
         click()
     if exists(Pattern("btns openlink cancel.png").targetOffset(51,-3)):
         click()
-        logger.c(fn) 
+        logger.c(fn+": None 1") 
         return None
             
     type(r"a",KeyModifier.CTRL)
@@ -138,7 +317,7 @@ def openOCRTab():
     type(tabNumber,KeyModifier.CTRL)
     sleep(2)
     goToURL(urlYaPictureSearch)
-    wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
+    wait("1696337631239.png",120)
         
     logger.c(fn)
 
@@ -148,7 +327,7 @@ def ocrCaptcha(filename):
     logger.c(fn)
     
     type(getTabNumber("OCR"),KeyModifier.CTRL)
-    wait(Pattern("find_picture.png").similar(0.97).targetOffset(54,2),120)
+    wait("1697555884721.png",120)
     sleep(1)
     click() 
     try: 
@@ -209,7 +388,7 @@ def waitPageLoad():
     fn = "waitPageLoad"
     logger.o(fn)
     _region = Region(6,23,395,82)
-    wait("1682631301869.png",60)
+    wait("1682631301869.png",120)
     logger.c(fn)
 
 
@@ -230,6 +409,9 @@ def isOrderAccepted():
         r.highlight(1)
         td = r.text()
         print(td)
+    else:
+        return False
+        
 
     #----------------------------------------------------
     v = exists("1682714278396.png", 0)
@@ -238,10 +420,13 @@ def isOrderAccepted():
         r.highlight(1)
         tv = r.text()
         print(tv)
+    else:
+        return False
         
     csvfile = open("orders.csv", 'a') #открыть на дозапись
     csvwriter = csv.writer(csvfile, dialect='excel-tab')
-    csvwriter.writerow([auto["id"], td, tv, datetime.datetime.now().strftime('%d.%m.%Y %H:%M')])
+    #csvwriter.writerow([auto["id"], td, tv, datetime.datetime.now().strftime('%d.%m.%Y %H:%M'),datetime.datetime.now()+datetime.datetime.strptime(tv, "%H:%M:%S").time()])
+    csvwriter.writerow([auto["id"], td, tv, datetime.datetime.now().strftime('%d.%m.%Y %H:%M'), addTime(datetime.datetime.now(),tv).strftime('%d.%m.%Y %H:%M')])
     csvfile.close()
     #----------------------------------------------------
 
@@ -417,9 +602,14 @@ def getOrderFindWordsPic(i=1):
     if auto["findWords"] == "халтура":
         logger.c(fn)
         if i==1:
-            return Pattern("haltura-max.png").similar(0.94).targetOffset(-150,50)
+            return Pattern("haltura-max.png").similar(0.94).targetOffset(-150,65)
         if i==2:    
             return Pattern("1679495289633.png").similar(0.93).targetOffset(-140,50)
+    
+    if auto["findWords"] == "сделать ставку":
+        logger.c(fn)
+        return auto["findWordsPic"]
+    
     logger.c(fn)
 
 #=======================================================================================
@@ -449,7 +639,7 @@ def findWords():
     logger.o(fn)
     #type(Key.ENTER)
     sleep(1)
-    for count in range(5):
+    for count in range(1):
         #Do.popup("count = "+str(count),1)
         if exists("btn-close-red.png",0):
             click()
@@ -492,8 +682,8 @@ def getOrder():
                 #    isOrderTaken = clickOnCaptcha()
                 isOrderTaken = clickOnCaptcha()
             else:
-                reloadOrders()
-                wait(5)
+                logger.c(fn)
+                return
     logger.warning("    isOrderTaken = "+str(isOrderTaken))
     if isOrderTaken:
         auto["timeStart"] = time.time()
@@ -581,11 +771,11 @@ def getAutoStatus():
     return getAutoStatus()
 
 #=======================================================================================
-def checkAutoURL():
-    fn = "checkAutoURL"
+def checkURL(pURL):
+    fn = "checkURL"
     logger.o(fn)
     result = True
-    url = urlGarage+auto["id"]        
+    url = pURL        
     mouseMove("1682630621223.png")   
     type(u"l",KeyModifier.CTRL)
     sleep(1)
@@ -604,6 +794,13 @@ def checkAutoURL():
     logger.c(fn)
     return result
 
+def checkAutoURL():
+    fn = "checkAutoURL"
+    logger.o(fn)
+    result = checkURL(urlGarage+auto["id"])
+    logger.c(fn)
+    return result 
+
 
 #=======================================================================================
 def loadAutoPage():
@@ -617,6 +814,7 @@ def loadAutoPage():
     while not exists(_pic,0): 
         goToURL(urlGarage+key)
         waitPageLoad()
+        taxi_base.goToPageHome()
         taxi_base.closeReclama()
     taxi_base.highlightPicture(_pic)    
     logger.c(fn)
@@ -627,11 +825,15 @@ def main():
     #logger.o(fn)
     for key, val in dictTaxi.items(): 
         if val["id"] == "OCR":
-            continue;
+            continue
         
         global auto
         auto = val
         taxi_base.auto = auto
+        
+        if auto["id"] == "betting":
+            betting()
+            continue
                 
         if auto.get("status", "empty") == "order accepted":
             if time.time() - auto.get("orderAcceptedStart", time.time()-60*60*24) < 1*60:
@@ -640,7 +842,7 @@ def main():
             if time.time() - auto.get("lastEnterTime", time.time()-60*60*24) < 1*60:
                 continue
 
-            if time.time() - auto.get("lastReloadTime", time.time()-60*60*24) > 5*60:
+            if time.time() - auto.get("lastReloadTime", time.time()-60*60*24) > 1*60:
                 auto["lastReloadTime"] = time.time()
                 loadAutoPage()
                 
@@ -649,9 +851,11 @@ def main():
         
         type(getTabNumber(auto["id"]),KeyModifier.CTRL)
         sleep(1)
-
+        
+        loadAutoPage()
+        
         auto["lastEnterTime"] = time.time()
-        if auto.get("status", "firs open") == "first open":
+        if auto.get("status", "first open") == "first open":
             loadAutoPage()
 
         if not checkAutoURL():
@@ -674,7 +878,7 @@ def main():
 
     #logger.c(fn)
 
-
+logger.setBaseConfig('log_taxiv2.log')
 logger.warning("test")
 taxi_base.logger = logger
 taxi_base.region = region
