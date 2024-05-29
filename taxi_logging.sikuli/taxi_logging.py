@@ -14,7 +14,8 @@ def setBaseConfig(logname='log-taxi.log', logformat=''):
         logformat = FORMAT
     logging.basicConfig(
         filename=logname,
-        format=logformat)
+        format=logformat,
+        level=logging.INFO)
 
 #=======================================================================================
 def getLoggerTabsStr():
@@ -41,3 +42,6 @@ def c(text, pReturn = ''):
 
 def warning(pText):
     logger.warning(pText)
+    
+def info(pText):
+    logger.info(pText)    

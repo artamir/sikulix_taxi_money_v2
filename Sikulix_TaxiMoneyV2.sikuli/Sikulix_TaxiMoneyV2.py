@@ -7,12 +7,13 @@ import taxi_base
 import taxi_ability_click
 import taxi_captcha_answer_click
 
-urlGarage = "https://www.taxi-money.in/garage/"
+urlGarage = "https://www.taxi-money.net/garage/"
 captchaPath = "c:\\Sikulix_scripts\\git_sikulix_taximoney\\sikulix_taximoney\\captcha\\"
 urlYaPictureSearch = r'https://yandex.ru/images/search?rpt=imageview'
 
 auto = None
 betting = None
+dictTasks = {}
 dictTaxi = {"OCR":
                 {"id":"OCR",
                 "tab":"1"},
@@ -34,8 +35,20 @@ dictTaxi = {"OCR":
                 "orderPic":"rabota",
                 "findWords":"работа",
                 "abilities":["expensive order", "fast order"],
+                "doTasks":True,
                 "use diamonds reload": True},
 
+            "435277":
+                {"id":"435277",
+                "tab":"2",
+                "pic":"1711229425407.png",
+                "orderPic":"rabota",
+                "findWords":"работа",
+                "abilities":["expensive order", "fast order"],
+                "doTasks":True,
+                "use diamonds reload": True},
+
+                
             "355147":
                 {"id":"355147",
                 "tab":"3",
@@ -44,9 +57,22 @@ dictTaxi = {"OCR":
                 "findWords":"работа",
                 #"orderPic":"haltura",
                 #"findWords":"халтура",                
+                "doTasks":True,
                 "abilities":["expensive order", "fast order"],
                 "use diamonds reload": True},
-               
+             "tasks":
+                {"id":"tasks",
+                "tab":"5",
+                "urls":{"tasks12":"https://www.taxi-money.net/tasks/12",
+                        "tasks13":"https://www.taxi-money.net/tasks/13"},
+                "findWordsClick":{"Получить награду":"1708278762925.png"}
+                },
+             "bonuses":
+                {"id":"bonuses",
+                "tab":"6",
+                "urls":{"daily":"https://www.taxi-money.net/bonus/daily"},
+                "findWordsClick":{"Получить бонус":"1708329598748.png"}               
+                },
  #           "264417":
  #             {"id":"264417",
  #               "tab":"5",
@@ -60,11 +86,11 @@ dictTaxi = {"OCR":
  #               {"id":"betting",
  #               "tab":"6",
  #               "dictBK":{
- #                   "у вована": "https://www.taxi-money.in/bookmaker-company/91",
- #                   "Lanaya's БК": "https://www.taxi-money.in/bookmaker-company/23",
- #                   "NIRVANA БК": "https://www.taxi-money.in/bookmaker-company/3",
- #                   "Mimicry83": "https://www.taxi-money.in/bookmaker-company/6"},
- #                   #"Mimicry83": "https://www.taxi-money.in/bookmaker-company/64"},
+ #                   "у вована": "https://www.taxi-money.net/bookmaker-company/91",
+ #                   "Lanaya's БК": "https://www.taxi-money.net/bookmaker-company/23",
+ #                   "NIRVANA БК": "https://www.taxi-money.net/bookmaker-company/3",
+ #                   "Mimicry83": "https://www.taxi-money.net/bookmaker-company/6"},
+ #                   #"Mimicry83": "https://www.taxi-money.net/bookmaker-company/64"},
  #               "findWordsHandle":"обработать",
  #               "findWordsHandlePic":"handle pic.png",
  #               "findWordsNexOrder":"NextOrer",
@@ -123,21 +149,26 @@ def addTime(pDate, strTime, template=None):
 #=======================================================================================
 def findExists(word, pic, seconds):
     fn = "findExists("+word+", "+str(pic)+", seconds)"
-    
-    result = exists(pic, seconds)
+    logger.o(fn)
+    result = False if exists(pic, seconds) == None else True
     if result:
+        logger.info("1")
+        logger.c(fn)
         return result
     
     type(r"f",KeyModifier.CTRL)
-    #paste(unicd(word))
+    paste(unicd(word))
     
-    result = exists(pic, seconds)
+    result = False if exists(pic, seconds) == None else True
     #print("result1 = "+str(result))
+    logger.info(str(result))
     if not result:
+        
         type(Key.F3)
         result = exists(pic, seconds)
         #print("result2 = "+str(result))
     
+    logger.c(fn)
     return result
 
 #=======================================================================================
@@ -221,6 +252,63 @@ def betting():
                             logger.c(fn)
                             return True
     
+    logger.c(fn)
+#=======================================================================================
+def bonuses():
+    fn = "bonuses"
+    logger.o(fn)
+    
+    type(getTabNumber(auto["id"]), KeyModifier.CTRL)
+    for key, val in auto["urls"].items():
+        goToURL(val)
+        wait(1)
+        for word, pic in auto["findWordsClick"].items():
+            while findExists(word, pic, 1):
+                click(pic)
+                wait(1)
+    logger.c(fn)
+
+#=======================================================================================
+def tasks():
+    fn = "tasks"
+    logger.o(fn)
+    
+    type(getTabNumber(auto["id"]), KeyModifier.CTRL)
+    for key, val in auto["urls"].items():
+        goToURL(val)
+        wait(1)
+        checkTasks()
+        for word, pic in auto["findWordsClick"].items():
+            while findExists(word, pic, 1):
+                click(pic)
+                wait(1)
+                if exists("1708278910151.png",1):
+                    click()
+    
+    logger.c(fn)
+
+#=======================================================================================
+def checkTasks():
+    fn = "checkTasks"
+    logger.o(fn)
+    if findExists("Использовать 1 товар из магазина", Pattern("1708280970364.png").similar(0.91), 1):
+        dictTasks["Использовать 1 товар из магазина"] = True
+    logger.c(fn)
+
+#=======================================================================================
+def doTasks():
+    fn = "doTasks"
+    logger.o(fn)
+    isDoTasks = auto.get("doTasks", False)
+    if isDoTasks:
+        for taskName, doTask in dictTasks.items():
+            if not doTask:
+                continue
+            if taskName == "Использовать 1 товар из магазина":
+                taxi_base.goToPageUp()
+                taxi_base.scrollToPictureDown("1708258714018.png", taxi_base.region)
+                if taxi_base.ifExistsClick("1708258714018-1.png"):
+                   dictTasks[taskName] = False
     logger.c(fn)
 
 
@@ -331,7 +419,7 @@ def ocrCaptcha(filename):
     sleep(1)
     click() 
     try: 
-        wait("select_file.png")
+        wait("1711116551941.png")
         click()
     except:
         type(getTabNumber(auto["id"]), KeyModifier.CTRL)
@@ -834,7 +922,15 @@ def main():
         if auto["id"] == "betting":
             betting()
             continue
-                
+
+        if auto["id"] == "tasks":
+            tasks()
+            continue
+
+        if auto["id"] == "bonuses":
+            bonuses()
+            continue
+
         if auto.get("status", "empty") == "order accepted":
             if time.time() - auto.get("orderAcceptedStart", time.time()-60*60*24) < 1*60:
                 continue
@@ -866,6 +962,8 @@ def main():
         if status.find("empty") > -1:
             getOrder()
             taxi_ability_click.getAbilities(auto)
+        else:
+            doTasks()
 
         #if status == "order accepted":
         #    taxi_ability_click.getAbilities(auto)
