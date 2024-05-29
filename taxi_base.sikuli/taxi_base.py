@@ -6,6 +6,7 @@ region = None
 regionMargin = None
 regionSideMenu = None
 firefox = None
+auto = None
 
 #=======================================================================================
 def setLogger(pLogger):
@@ -16,10 +17,10 @@ def highlightPicture(pPicture):
     try: 
         m = find(pPicture)
         # the red frame will grow 5 times
-        for i in range(2):
-            m.highlight(1)
-            m = m.nearby(5)
-
+        #for i in range(2):
+        #    m.highlight(1)
+        #    m = m.nearby(5)
+        m.highlight(1)
         return True    
     except:
         return False

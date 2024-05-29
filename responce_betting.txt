@@ -1,0 +1,26 @@
++++ running this Java
++++ trying to run SikuliX
++++ using: -Xms64M -Xmx512M -Dfile.encoding=UTF-8 -Dsikuli.FromCommandLine -jar c:\Sikulix\sikulix.jar -r ".\Sikulix_TaxiMoney_betting.sikuli" --args -sd 2022-11-20 -ed 2022-11-30
+[error] App.open failed: i:\\FirefoxPortable\\App\\Firefox64\\firefox.exe not found
+[log] ( Ctrl )  TYPE "t"
+[log] ( Ctrl )  TYPE "t"
+c:\Sikulix_scripts\git_sikulix_taximoney\sikulix_taximoney\captcha\
+[error] script [ C:\Sikulix_scripts\git_sikulix_taximoney_v21\each_taxi_in_diff_tab\Sikulix_TaxiMoney_betting.sikuli ] stopped with error at line --unknown--
+[error] Error caused by: Traceback (most recent call last):
+  File "C:\Sikulix_scripts\git_sikulix_taximoney_v21\each_taxi_in_diff_tab\Sikulix_TaxiMoney_betting.sikuli\Sikulix_TaxiMoney_betting.py", line 895, in <module>
+    openOCRTab()
+  File "C:\Sikulix_scripts\git_sikulix_taximoney_v21\each_taxi_in_diff_tab\Sikulix_TaxiMoney_betting.sikuli\Sikulix_TaxiMoney_betting.py", line 315, in openOCRTab
+    wait("1679776061740.png", 120)
+  File "C:\Users\taxistavki\AppData\Roaming\Sikulix\Lib\sikuli\Sikuli.py", line 69, in wait
+    return SCREEN.wait(target, timeout)
+  Line 2761, in file Region.java
+
+	at org.sikuli.script.Region.wait(Region.java:2761)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+org.sikuli.script.FindFailed: FindFailed: 1679776061740.png: (63x54) in S(0)[0,0 1364x697] E:Y, T:3,0
+  Line 2761, in file Region.java
+
+

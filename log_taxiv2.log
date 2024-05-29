@@ -1,0 +1,306 @@
+2024-02-18 20:45:24,477 test
+2024-02-18 20:45:24,493 createTabs {
+2024-02-18 20:45:35,029 } createTabs
+2024-02-18 20:45:35,029 openOCRTab {
+2024-02-18 20:45:35,716 	getTabNumber(taxiID=OCR) {
+2024-02-18 20:45:35,732 	} getTabNumber(taxiID=OCR)
+2024-02-18 20:45:37,838 	goToURL {
+2024-02-18 20:45:39,118 	} goToURL
+2024-02-18 20:45:39,680 } openOCRTab
+2024-02-18 20:45:39,680 =========================================================
+2024-02-18 20:45:39,680 getTabNumber(taxiID=319558) {
+2024-02-18 20:45:39,696 } getTabNumber(taxiID=319558)
+2024-02-18 20:45:40,803 loadAutoPage {
+2024-02-18 20:45:40,803 	getTabNumber(taxiID=319558) {
+2024-02-18 20:45:40,803 	} getTabNumber(taxiID=319558)
+2024-02-18 20:45:42,378 	goToURL {
+2024-02-18 20:45:43,426 	} goToURL
+2024-02-18 20:45:43,426 	waitPageLoad {
+2024-02-18 20:45:46,071 	} waitPageLoad
+2024-02-18 20:45:46,073 	goToPageHome {
+2024-02-18 20:45:46,073 		ifExistsClick {
+2024-02-18 20:45:46,073 			closeReclama {
+2024-02-18 20:45:47,631 			} closeReclama
+2024-02-18 20:45:47,970 		} ifExistsClick
+2024-02-18 20:45:48,032 	} goToPageHome
+2024-02-18 20:45:48,035 	closeReclama {
+2024-02-18 20:45:49,785 	} closeReclama
+2024-02-18 20:45:51,308 } loadAutoPage
+2024-02-18 20:45:51,308 loadAutoPage {
+2024-02-18 20:45:51,308 	getTabNumber(taxiID=319558) {
+2024-02-18 20:45:51,308 	} getTabNumber(taxiID=319558)
+2024-02-18 20:45:53,786 } loadAutoPage
+2024-02-18 20:45:53,786 checkAutoURL {
+2024-02-18 20:45:53,786 	checkURL {
+2024-02-18 20:45:55,476 	} checkURL
+2024-02-18 20:45:55,476 } checkAutoURL
+2024-02-18 20:45:55,477 getAutoStatus {
+2024-02-18 20:45:55,477     getAutoStatus: auto: {'lastEnterTime': 1708278351.308, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0'}
+2024-02-18 20:45:55,480 	closeReclama {
+2024-02-18 20:45:56,917 	} closeReclama
+2024-02-18 20:46:00,641 } getAutoStatus
+2024-02-18 20:46:00,641 getAutoStatus {
+2024-02-18 20:46:00,644     getAutoStatus: auto: {'lastEnterTime': 1708278351.308, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0'}
+2024-02-18 20:46:00,644 	closeReclama {
+2024-02-18 20:46:02,026 	} closeReclama
+2024-02-18 20:46:03,236 	setTimers {
+2024-02-18 20:46:03,236 	} setTimers
+2024-02-18 20:46:03,236 } getAutoStatus
+2024-02-18 20:46:03,239 =========================================================
+2024-02-18 20:46:03,239 getTabNumber(taxiID=355147) {
+2024-02-18 20:46:03,239 } getTabNumber(taxiID=355147)
+2024-02-18 20:46:04,301 loadAutoPage {
+2024-02-18 20:46:04,301 	getTabNumber(taxiID=355147) {
+2024-02-18 20:46:04,301 	} getTabNumber(taxiID=355147)
+2024-02-18 20:46:05,838 	goToURL {
+2024-02-18 20:46:06,782 	} goToURL
+2024-02-18 20:46:06,782 	waitPageLoad {
+2024-02-18 20:46:09,818 	} waitPageLoad
+2024-02-18 20:46:09,819 	goToPageHome {
+2024-02-18 20:46:09,819 		ifExistsClick {
+2024-02-18 20:46:09,819 			closeReclama {
+2024-02-18 20:46:11,312 			} closeReclama
+2024-02-18 20:46:11,608 		} ifExistsClick
+2024-02-18 20:46:11,667 	} goToPageHome
+2024-02-18 20:46:11,668 	closeReclama {
+2024-02-18 20:46:13,105 	} closeReclama
+2024-02-18 20:46:14,503 } loadAutoPage
+2024-02-18 20:46:14,505 loadAutoPage {
+2024-02-18 20:46:14,506 	getTabNumber(taxiID=355147) {
+2024-02-18 20:46:14,506 	} getTabNumber(taxiID=355147)
+2024-02-18 20:46:17,013 } loadAutoPage
+2024-02-18 20:46:17,015 checkAutoURL {
+2024-02-18 20:46:17,016 	checkURL {
+2024-02-18 20:46:18,789 	} checkURL
+2024-02-18 20:46:18,792 } checkAutoURL
+2024-02-18 20:46:18,796 getAutoStatus {
+2024-02-18 20:46:18,798     getAutoStatus: auto: {'lastEnterTime': 1708278374.505, 'pic': '1689538309629.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'tab': '3', 'id': '355147', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0'}
+2024-02-18 20:46:18,798 	closeReclama {
+2024-02-18 20:46:20,296 	} closeReclama
+2024-02-18 20:46:23,983 } getAutoStatus
+2024-02-18 20:46:23,984 getAutoStatus {
+2024-02-18 20:46:23,986     getAutoStatus: auto: {'lastEnterTime': 1708278374.505, 'pic': '1689538309629.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'tab': '3', 'id': '355147', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0'}
+2024-02-18 20:46:23,986 	closeReclama {
+2024-02-18 20:46:25,484 	} closeReclama
+2024-02-18 20:46:26,625 	setTimers {
+2024-02-18 20:46:26,625 	} setTimers
+2024-02-18 20:46:26,627 } getAutoStatus
+2024-02-18 20:46:26,627 =========================================================
+2024-02-18 20:46:26,628 getTabNumber(taxiID=340726) {
+2024-02-18 20:46:26,630 } getTabNumber(taxiID=340726)
+2024-02-18 20:46:27,697 loadAutoPage {
+2024-02-18 20:46:27,697 	getTabNumber(taxiID=340726) {
+2024-02-18 20:46:27,698 	} getTabNumber(taxiID=340726)
+2024-02-18 20:46:29,283 	goToURL {
+2024-02-18 20:46:30,328 	} goToURL
+2024-02-18 20:46:30,329 	waitPageLoad {
+2024-02-18 20:46:31,750 	} waitPageLoad
+2024-02-18 20:46:31,753 	goToPageHome {
+2024-02-18 20:46:31,753 		ifExistsClick {
+2024-02-18 20:46:31,755 			closeReclama {
+2024-02-18 20:46:33,273 			} closeReclama
+2024-02-18 20:46:33,569 		} ifExistsClick
+2024-02-18 20:46:33,630 	} goToPageHome
+2024-02-18 20:46:33,630 	closeReclama {
+2024-02-18 20:46:35,062 	} closeReclama
+2024-02-18 20:46:36,697 } loadAutoPage
+2024-02-18 20:46:36,697 loadAutoPage {
+2024-02-18 20:46:36,700 	getTabNumber(taxiID=340726) {
+2024-02-18 20:46:36,700 	} getTabNumber(taxiID=340726)
+2024-02-18 20:46:39,351 } loadAutoPage
+2024-02-18 20:46:39,351 checkAutoURL {
+2024-02-18 20:46:39,352 	checkURL {
+2024-02-18 20:46:41,020 	} checkURL
+2024-02-18 20:46:41,020 } checkAutoURL
+2024-02-18 20:46:41,020 getAutoStatus {
+2024-02-18 20:46:41,020     getAutoStatus: auto: {'lastEnterTime': 1708278396.698, 'pic': '1684298810495.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'tab': '2', 'id': '340726', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0'}
+2024-02-18 20:46:41,020 	closeReclama {
+2024-02-18 20:46:42,430 	} closeReclama
+2024-02-18 20:46:46,006 } getAutoStatus
+2024-02-18 20:46:46,006 getAutoStatus {
+2024-02-18 20:46:46,006     getAutoStatus: auto: {'lastEnterTime': 1708278396.698, 'pic': '1684298810495.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'tab': '2', 'id': '340726', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0'}
+2024-02-18 20:46:46,007 	closeReclama {
+2024-02-18 20:46:47,405 	} closeReclama
+2024-02-18 20:46:48,552 	setTimers {
+2024-02-18 20:46:48,552 	} setTimers
+2024-02-18 20:46:48,555 } getAutoStatus
+2024-02-18 20:46:48,555 tasks {
+2024-02-18 20:46:48,555 	getTabNumber(taxiID=tasks) {
+2024-02-18 20:46:48,558 	} getTabNumber(taxiID=tasks)
+2024-02-18 20:46:48,618 	goToURL {
+2024-02-18 20:46:54,148 	} goToURL
+2024-02-18 20:46:55,150 	findExists(Получить награду, 1708258965428.png, seconds) {
+2024-02-18 20:46:58,048 False
+2024-02-18 20:46:59,118 	} findExists(Получить награду, 1708258965428.png, seconds)
+2024-02-18 20:46:59,118 	goToURL {
+2024-02-18 20:47:00,163 	} goToURL
+2024-02-18 20:47:01,165 	findExists(Получить награду, 1708258965428.png, seconds) {
+2024-02-18 20:47:03,782 False
+2024-02-18 20:47:04,895 	} findExists(Получить награду, 1708258965428.png, seconds)
+2024-02-18 20:47:04,898 } tasks
+2024-02-18 20:47:04,898 loadAutoPage {
+2024-02-18 20:47:04,898 	getTabNumber(taxiID=319558) {
+2024-02-18 20:47:04,898 	} getTabNumber(taxiID=319558)
+2024-02-18 20:47:06,526 	goToURL {
+2024-02-18 20:47:07,542 	} goToURL
+2024-02-18 20:47:07,545 	waitPageLoad {
+2024-02-18 20:47:09,940 	} waitPageLoad
+2024-02-18 20:47:09,940 	goToPageHome {
+2024-02-18 20:47:09,940 		ifExistsClick {
+2024-02-18 20:47:09,941 			closeReclama {
+2024-02-18 20:47:11,589 			} closeReclama
+2024-02-18 20:47:11,900 		} ifExistsClick
+2024-02-18 20:47:11,963 	} goToPageHome
+2024-02-18 20:47:11,963 	closeReclama {
+2024-02-18 20:47:13,490 	} closeReclama
+2024-02-18 20:47:14,851 } loadAutoPage
+2024-02-18 20:47:14,852 =========================================================
+2024-02-18 20:47:14,852 getTabNumber(taxiID=319558) {
+2024-02-18 20:47:14,854 } getTabNumber(taxiID=319558)
+2024-02-18 20:47:15,917 loadAutoPage {
+2024-02-18 20:47:15,917 	getTabNumber(taxiID=319558) {
+2024-02-18 20:47:15,917 	} getTabNumber(taxiID=319558)
+2024-02-18 20:47:18,362 } loadAutoPage
+2024-02-18 20:47:18,362 checkAutoURL {
+2024-02-18 20:47:18,364 	checkURL {
+2024-02-18 20:47:20,058 	} checkURL
+2024-02-18 20:47:20,058 } checkAutoURL
+2024-02-18 20:47:20,059 getAutoStatus {
+2024-02-18 20:47:20,059     getAutoStatus: auto: {'lastEnterTime': 1708278438.363, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'lastReloadTime': 1708278424.898, 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278363.236}
+2024-02-18 20:47:20,059 	closeReclama {
+2024-02-18 20:47:21,548 	} closeReclama
+2024-02-18 20:47:25,177 } getAutoStatus
+2024-02-18 20:47:25,178 getAutoStatus {
+2024-02-18 20:47:25,180     getAutoStatus: auto: {'lastEnterTime': 1708278438.363, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'lastReloadTime': 1708278424.898, 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278363.236}
+2024-02-18 20:47:25,180 	closeReclama {
+2024-02-18 20:47:26,809 	} closeReclama
+2024-02-18 20:47:28,013 	setTimers {
+2024-02-18 20:47:28,016 	} setTimers
+2024-02-18 20:47:28,016 } getAutoStatus
+2024-02-18 20:47:28,016 loadAutoPage {
+2024-02-18 20:47:28,019 	getTabNumber(taxiID=355147) {
+2024-02-18 20:47:28,019 	} getTabNumber(taxiID=355147)
+2024-02-18 20:47:29,584 	goToURL {
+2024-02-18 20:47:30,605 	} goToURL
+2024-02-18 20:47:30,607 	waitPageLoad {
+2024-02-18 20:47:31,947 	} waitPageLoad
+2024-02-18 20:47:31,948 	goToPageHome {
+2024-02-18 20:47:31,948 		ifExistsClick {
+2024-02-18 20:47:31,950 			closeReclama {
+2024-02-18 20:47:33,542 			} closeReclama
+2024-02-18 20:47:33,852 		} ifExistsClick
+2024-02-18 20:47:33,914 	} goToPageHome
+2024-02-18 20:47:33,914 	closeReclama {
+2024-02-18 20:47:35,380 	} closeReclama
+2024-02-18 20:47:36,767 } loadAutoPage
+2024-02-18 20:47:36,767 =========================================================
+2024-02-18 20:47:36,767 getTabNumber(taxiID=355147) {
+2024-02-18 20:47:36,767 } getTabNumber(taxiID=355147)
+2024-02-18 20:47:37,829 loadAutoPage {
+2024-02-18 20:47:37,829 	getTabNumber(taxiID=355147) {
+2024-02-18 20:47:37,832 	} getTabNumber(taxiID=355147)
+2024-02-18 20:47:40,309 } loadAutoPage
+2024-02-18 20:47:40,309 checkAutoURL {
+2024-02-18 20:47:40,309 	checkURL {
+2024-02-18 20:47:41,957 	} checkURL
+2024-02-18 20:47:41,957 } checkAutoURL
+2024-02-18 20:47:41,957 getAutoStatus {
+2024-02-18 20:47:41,957     getAutoStatus: auto: {'lastEnterTime': 1708278460.31, 'pic': '1689538309629.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'lastReloadTime': 1708278448.017, 'tab': '3', 'id': '355147', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278386.626}
+2024-02-18 20:47:41,957 	closeReclama {
+2024-02-18 20:47:43,559 	} closeReclama
+2024-02-18 20:47:47,003 } getAutoStatus
+2024-02-18 20:47:47,003 getAutoStatus {
+2024-02-18 20:47:47,003     getAutoStatus: auto: {'lastEnterTime': 1708278460.31, 'pic': '1689538309629.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'lastReloadTime': 1708278448.017, 'tab': '3', 'id': '355147', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278386.626}
+2024-02-18 20:47:47,005 	closeReclama {
+2024-02-18 20:47:48,519 	} closeReclama
+2024-02-18 20:47:50,217 	setTimers {
+2024-02-18 20:47:50,217 	} setTimers
+2024-02-18 20:47:50,220 } getAutoStatus
+2024-02-18 20:47:50,529 loadAutoPage {
+2024-02-18 20:47:50,529 	getTabNumber(taxiID=340726) {
+2024-02-18 20:47:50,529 	} getTabNumber(taxiID=340726)
+2024-02-18 20:47:52,089 	goToURL {
+2024-02-18 20:47:53,365 	} goToURL
+2024-02-18 20:47:53,368 	waitPageLoad {
+2024-02-18 20:47:54,618 	} waitPageLoad
+2024-02-18 20:47:54,621 	goToPageHome {
+2024-02-18 20:47:54,621 		ifExistsClick {
+2024-02-18 20:47:54,621 			closeReclama {
+2024-02-18 20:47:56,115 			} closeReclama
+2024-02-18 20:47:56,423 		} ifExistsClick
+2024-02-18 20:47:56,483 	} goToPageHome
+2024-02-18 20:47:56,483 	closeReclama {
+2024-02-18 20:47:57,895 	} closeReclama
+2024-02-18 20:47:59,538 } loadAutoPage
+2024-02-18 20:47:59,538 =========================================================
+2024-02-18 20:47:59,538 getTabNumber(taxiID=340726) {
+2024-02-18 20:47:59,540 } getTabNumber(taxiID=340726)
+2024-02-18 20:48:00,601 loadAutoPage {
+2024-02-18 20:48:00,601 	getTabNumber(taxiID=340726) {
+2024-02-18 20:48:00,601 	} getTabNumber(taxiID=340726)
+2024-02-18 20:48:03,203 } loadAutoPage
+2024-02-18 20:48:03,203 checkAutoURL {
+2024-02-18 20:48:03,206 	checkURL {
+2024-02-18 20:48:04,842 	} checkURL
+2024-02-18 20:48:04,842 } checkAutoURL
+2024-02-18 20:48:04,842 getAutoStatus {
+2024-02-18 20:48:04,842     getAutoStatus: auto: {'lastEnterTime': 1708278483.203, 'pic': '1684298810495.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'lastReloadTime': 1708278470.528, 'tab': '2', 'id': '340726', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278408.553}
+2024-02-18 20:48:04,842 	closeReclama {
+2024-02-18 20:48:06,345 	} closeReclama
+2024-02-18 20:48:09,913 } getAutoStatus
+2024-02-18 20:48:09,913 getAutoStatus {
+2024-02-18 20:48:09,913     getAutoStatus: auto: {'lastEnterTime': 1708278483.203, 'pic': '1684298810495.png', 'use diamonds reload': True, 'orderPic': 'rabota', 'abilities': ['expensive order', 'fast order'], 'lastReloadTime': 1708278470.528, 'tab': '2', 'id': '340726', 'findWords': '\xd1\x80\xd0\xb0\xd0\xb1\xd0\xbe\xd1\x82\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278408.553}
+2024-02-18 20:48:09,915 	closeReclama {
+2024-02-18 20:48:11,348 	} closeReclama
+2024-02-18 20:48:12,460 	setTimers {
+2024-02-18 20:48:12,460 	} setTimers
+2024-02-18 20:48:12,463 } getAutoStatus
+2024-02-18 20:48:12,463 tasks {
+2024-02-18 20:48:12,463 	getTabNumber(taxiID=tasks) {
+2024-02-18 20:48:12,463 	} getTabNumber(taxiID=tasks)
+2024-02-18 20:48:12,526 	goToURL {
+2024-02-18 20:48:13,548 	} goToURL
+2024-02-18 20:48:14,548 	findExists(Получить награду, 1708258965428.png, seconds) {
+2024-02-18 20:48:16,707 False
+2024-02-18 20:48:17,831 	} findExists(Получить награду, 1708258965428.png, seconds)
+2024-02-18 20:48:17,831 	goToURL {
+2024-02-18 20:48:18,834 	} goToURL
+2024-02-18 20:48:19,835 	findExists(Получить награду, 1708258965428.png, seconds) {
+2024-02-18 20:48:22,138 False
+2024-02-18 20:48:23,266 	} findExists(Получить награду, 1708258965428.png, seconds)
+2024-02-18 20:48:23,266 } tasks
+2024-02-18 20:48:23,266 loadAutoPage {
+2024-02-18 20:48:23,266 	getTabNumber(taxiID=319558) {
+2024-02-18 20:48:23,266 	} getTabNumber(taxiID=319558)
+2024-02-18 20:48:24,914 	goToURL {
+2024-02-18 20:48:25,921 	} goToURL
+2024-02-18 20:48:25,921 	waitPageLoad {
+2024-02-18 20:48:28,394 	} waitPageLoad
+2024-02-18 20:48:28,394 	goToPageHome {
+2024-02-18 20:48:28,394 		ifExistsClick {
+2024-02-18 20:48:28,395 			closeReclama {
+2024-02-18 20:48:29,844 			} closeReclama
+2024-02-18 20:48:30,144 		} ifExistsClick
+2024-02-18 20:48:30,206 	} goToPageHome
+2024-02-18 20:48:30,206 	closeReclama {
+2024-02-18 20:48:31,598 	} closeReclama
+2024-02-18 20:48:33,069 } loadAutoPage
+2024-02-18 20:48:33,069 =========================================================
+2024-02-18 20:48:33,069 getTabNumber(taxiID=319558) {
+2024-02-18 20:48:33,071 } getTabNumber(taxiID=319558)
+2024-02-18 20:48:34,131 loadAutoPage {
+2024-02-18 20:48:34,131 	getTabNumber(taxiID=319558) {
+2024-02-18 20:48:34,131 	} getTabNumber(taxiID=319558)
+2024-02-18 20:48:36,563 } loadAutoPage
+2024-02-18 20:48:36,563 checkAutoURL {
+2024-02-18 20:48:36,565 	checkURL {
+2024-02-18 20:48:38,203 	} checkURL
+2024-02-18 20:48:38,203 } checkAutoURL
+2024-02-18 20:48:38,206 getAutoStatus {
+2024-02-18 20:48:38,206     getAutoStatus: auto: {'lastEnterTime': 1708278516.564, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'lastReloadTime': 1708278503.266, 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278363.236}
+2024-02-18 20:48:38,206 	closeReclama {
+2024-02-18 20:48:39,651 	} closeReclama
+2024-02-18 20:48:43,772 } getAutoStatus
+2024-02-18 20:48:43,772 getAutoStatus {
+2024-02-18 20:48:43,772     getAutoStatus: auto: {'lastEnterTime': 1708278516.564, 'pic': '319558.png', 'use diamonds reload': True, 'orderPic': 'haltura', 'lastReloadTime': 1708278503.266, 'tab': '2', 'id': '319558', 'findWords': '\xd1\x85\xd0\xb0\xd0\xbb\xd1\x82\xd1\x83\xd1\x80\xd0\xb0', 'status': 'order accepted', 'orderAcceptedStart': 1708278363.236}
+2024-02-18 20:48:43,772 	closeReclama {
