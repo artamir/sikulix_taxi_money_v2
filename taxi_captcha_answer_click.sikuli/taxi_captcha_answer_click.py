@@ -20,6 +20,12 @@ def clickOnPicture(pPicture):
     taxi_base.logger.c(fn) 
     return False
 
+def clickOnSecondImage():
+    _captcha2 = Pattern("_captcha21-2.png").targetOffset(1,-52)
+    if exists(_captcha2):
+        click()
+
+    
 def clickOnCaptchaAnswer(strAnswer):
     fn = "clickOnCaptchaAnswer("+strAnswer+")"
     taxi_base.logger.o(fn)

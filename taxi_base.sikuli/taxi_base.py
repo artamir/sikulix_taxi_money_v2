@@ -76,6 +76,7 @@ def  scrollToOrderDown(pPicture, pRegion):
                 reloadOrders()
                 
             type(Key.PAGE_DOWN)
+            
         else:
             logger.c(fn)
             return True
@@ -91,6 +92,7 @@ def goToPageEnd():
     ifExistsClick("1668111730485.png",regionMargin)
     #Mouse.move(at)
     type(Key.END, KeyModifier.CTRL)
+
     logger.c(fn)
 
 #=======================================================================================
@@ -101,6 +103,7 @@ def goToPageHome():
     ifExistsClick("1668111730485-1.png",regionMargin)
     #Mouse.move(at)
     type(Key.HOME, KeyModifier.CTRL)
+
     logger.c(fn)
     
 #=======================================================================================
@@ -112,7 +115,7 @@ def goToPageDown():
     goToPageEnd()
 
 #=======================================================================================
-def ifExistsClick(pPicture, pRegion=None):
+def ifExistsClick(pPicture, pRegion=None, seconds = 0):
     fn = "ifExistsClick"
     logger.o(fn)
     #at = Mouse.at() 
@@ -129,14 +132,14 @@ def ifExistsClick(pPicture, pRegion=None):
 
     #at = Mouse.at()   
     try:
-        if pRegion.exists(pPicture,0):
+        if pRegion.exists(pPicture,seconds):
             #pRegion.click(pPicture)
             pRegion.click()
             #Mouse.move(at)
             logger.c(fn)
             return True
     except: 
-        if exists(pPicture,0):
+        if exists(pPicture,seconds):
             #click(pPicture)
             click()
             #Mouse.move(at)
@@ -146,7 +149,25 @@ def ifExistsClick(pPicture, pRegion=None):
     logger.c(fn)
     return False
 
+def scroll(step):
+    if exists(Pattern("1723127884094.png").similar(0.90)):
+        scroller = find(Pattern("1723127884094.png").similar(0.90))
 
+    if exists(Pattern("1723130704313.png").similar(0.80)):
+        scroller = find(Pattern("1723130704313.png").similar(0.80))
+    screen_h = getH()
+    mouseMove(scroller)
+    mouseDown(Button.LEFT)
+    mousePos = Env.getMouseLocation()
+    x = mousePos.getX()
+    y = mousePos.getY()
+    step_real = step
+    if step > 0:
+        step_real = min(screen_h-y, step)
+    if step < 0:
+        step_real = max(step, -y)
+    mouseMove(0, step)
+    mouseUp(Button.LEFT)    
 #=======================================================================================
 def closeReclama():
     fn = "closeReclama"

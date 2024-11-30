@@ -10,6 +10,11 @@ def getAbilityPic(ability):
     if ability == "fast order":
         return Pattern("fast order pic-2.png").similar(0.94)
 
+    if ability == "stimul1":
+        return Pattern("1731903892684.png").similar(0.91)
+    if ability == "medium nitro":
+        return Pattern("1732786567149.png").similar(0.91)
+
 #=======================================================================================
 def getAbilities(auto):
     abilities = auto.get("abilities", None)

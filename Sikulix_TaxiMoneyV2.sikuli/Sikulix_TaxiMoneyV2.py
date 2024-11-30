@@ -17,26 +17,36 @@ dictTasks = {}
 dictTaxi = {"OCR":
                 {"id":"OCR",
                 "tab":"1"},
-            "319558":
-                {"id":"319558",
+            "451837":
+                {"id":"451837",
                 "tab":"2",
-                "pic":"319558.png",
-                #"orderPic":"rabota",
-                #"findWords":"работа",
-                "orderPic":"haltura",
-                "findWords":"халтура",
-                #"abilities":["expensive order", "fast order"],
-                "use diamonds reload": True},
-            
-            "340726":
-                {"id":"340726",
-                "tab":"2",
-                "pic":"1684298810495.png",
+                "pic":"1717402129130.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
-                "abilities":["expensive order", "fast order"],
-                "doTasks":True,
+                #"orderPic":"haltura",
+                #"findWords":"халтура",
+                "abilities":["expensive order", "fast order","stimul1","medium nitro"],
                 "use diamonds reload": True},
+            "496390":
+                {"id":"496390",
+                "tab":"2",
+                "pic":"1732200618849.png",
+                "orderPic":"rabota",
+                "findWords":"работа",
+                #"orderPic":"haltura",
+                #"findWords":"халтура",
+                "abilities":["expensive order", "fast order","stimul1","medium nitro"],
+                "use diamonds reload": True},        
+            
+    #        "340726":
+    #            {"id":"340726",
+    #            "tab":"2",
+    #            "pic":"1684298810495.png",
+    #            "orderPic":"rabota",
+    #            "findWords":"работа",
+    #            "abilities":["expensive order", "fast order"],
+    #            "doTasks":True,
+    #            "use diamonds reload": True},
 
             "435277":
                 {"id":"435277",
@@ -44,21 +54,21 @@ dictTaxi = {"OCR":
                 "pic":"1711229425407.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
-                "abilities":["expensive order", "fast order"],
+                "abilities":["expensive order", "fast order","stimul1","medium nitro"],
                 "doTasks":True,
                 "use diamonds reload": True},
 
                 
-            "355147":
-                {"id":"355147",
+            "478623":
+                {"id":"478623",
                 "tab":"3",
-                "pic":"1689538309629.png",
+                "pic":"1727973909590.png",
                 "orderPic":"rabota",
                 "findWords":"работа",
                 #"orderPic":"haltura",
                 #"findWords":"халтура",                
                 "doTasks":True,
-                "abilities":["expensive order", "fast order"],
+                "abilities":["expensive order", "fast order", "stimul1","medium nitro"],
                 "use diamonds reload": True},
              "tasks":
                 {"id":"tasks",
@@ -293,6 +303,8 @@ def checkTasks():
     logger.o(fn)
     if findExists("Использовать 1 товар из магазина", Pattern("1708280970364.png").similar(0.91), 1):
         dictTasks["Использовать 1 товар из магазина"] = True
+    elif findExists("Использовать 1 товар из магазина",Pattern("1723496741374.png").similar(0.90) , 1):
+        dictTasks["Использовать 1 товар из магазина"] = True
     logger.c(fn)
 
 #=======================================================================================
@@ -312,6 +324,16 @@ def doTasks():
     logger.c(fn)
 
 
+#=======================================================================================
+def inventory():
+    goToURL("https://www.taxi-money.net/tasks/12?switchTheme=new") 
+    if exists(Pattern("1731229029585.png").similar(0.80)):
+        click()
+        while exists(Pattern("1730067843810.png").similar(0.90)):
+            click()
+            if exists("1731229123679.png"):
+                click()
+                wait(5)
 #=======================================================================================
 def saveCaptcha():
     fn = "saveCaptcha"
@@ -613,7 +635,7 @@ def clickOnCaptcha():
         if captchaFileName == None:
            logger.c(fn) 
            return False 
-        result = ocrCaptcha(captchaFileName)
+        #result = ocrCaptcha(captchaFileName)
         
         try:
             click(_captcha2)
@@ -885,7 +907,7 @@ def checkURL(pURL):
 def checkAutoURL():
     fn = "checkAutoURL"
     logger.o(fn)
-    result = checkURL(urlGarage+auto["id"])
+    result = checkURL(urlGarage+auto["id"]+"?switchTheme=old")
     logger.c(fn)
     return result 
 
@@ -900,7 +922,7 @@ def loadAutoPage():
     key = auto["id"]
     print auto 
     while not exists(_pic,0): 
-        goToURL(urlGarage+key)
+        goToURL(urlGarage+key+"?switchTheme=old")
         waitPageLoad()
         taxi_base.goToPageHome()
         taxi_base.closeReclama()
@@ -974,6 +996,7 @@ def main():
         if status == "close":
             click("1678655733157.png")
 
+    inventory()
     #logger.c(fn)
 
 logger.setBaseConfig('log_taxiv2.log')
@@ -991,7 +1014,7 @@ taxi_captcha_answer_click.taxi_base = taxi_base
 createTabs()
 
 print captchaPath
-openOCRTab()
+#openOCRTab()
 while True:
     #logger.warning("=========================================================")
     main()    
